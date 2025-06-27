@@ -171,7 +171,7 @@ class Division(Operation):
         return a / b
     
 
-class power(Operation):
+class Power(Operation):
     """
     Class for power operation.
 
@@ -370,7 +370,7 @@ class OperationFactory:
         "subtract": Subtraction,
         "multiply": Multiplication,
         "divide": Division,
-        "power": power,
+        "power": Power,
         "root": Root,
         "modulus": Modulus,
         "integerdivide": IntegerDivision,
