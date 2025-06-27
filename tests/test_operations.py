@@ -140,6 +140,41 @@ class TestDivision(BaseOperationTest):
     }
 
 
+class TestRoot(BaseOperationTest):
+    """ Test Root operation"""
+
+    operation_class = Root
+    valid_test_cases = {
+        "square_root": {"a": 9, "b": 2, "expected": 3},
+        "cube_root": {"a": 27, "b": 3, "expected": 3},
+        "fourth_root": {"a": 16, "b": 4, "expected": 2},
+        "decimal_base": {"a": 2.25, "b": 2, "expected": 1.5},
+    }
+
+    invalid_test_cases = {
+        "negative_base": {
+            "a": -9,
+            "b": 2,
+            "error": ValidationError,
+            "message": "Cannot calculate the root of a negative number."  # Match actual error message
+        },
+        "zero_degree": {
+            "a": 16,
+            "b": 0,
+            "error": ValidationError,
+            "message": "Root degree must be greater than zero."  # Match actual error message
+        },
+        "negative_degree": {
+            "a": 16,
+            "b": -2,
+            "error": ValidationError,
+            "message": "Root degree must be greater than zero."  # Match actual error message
+        }
+    }
+
+
+
+
 
 
 
