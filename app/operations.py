@@ -318,6 +318,23 @@ class Percentage(Operation):
     Performs the calculation of a percentage of a number.
 
     """
+
+    def validate_operands(self, a, b):
+
+        """
+        Validate the operands for the percentage operation.
+        This method checks if the second operand (percentage value) is zero, which would cause a
+        division by zero error.
+
+        We override the base class method to add specific validation for percentage.
+        :param a: Base number
+        :param b: Percentage value
+        :raises ValidationError: If the second operand is zero.
+        """
+        
+        super().validate_operands(a, b)
+        if b == 0:
+            raise ValidationError("Percentage value cannot be zero.")
         
     def execute(self, a: Decimal, b: Decimal) -> Decimal:
         """
@@ -328,7 +345,9 @@ class Percentage(Operation):
         :return: Result of the percentage operation
         """
         self.validate_operands(a, b)
-        return (a * b) / 100
+        return (a/ b) * 100 
+
+
 
 
 class AbsoluteDifference(Operation):
