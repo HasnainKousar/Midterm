@@ -225,7 +225,81 @@ class Calculation:
         except (KeyError, InvalidOperation, ValueError) as e:
             raise OperationError(f"Invalid calculation data: {str(e)}")
         
+    
+    def __str__(self) -> str:        
+        """
+        String representation of the Calculation instance.
 
+        This method provides a human-readable string representation of the Calculation instance,
+        including the operation, operands, and result.
 
+        Returns:
+            str: A string representation of the Calculation instance.
+        """
+        return (f"{self.operation}({self.operand1}, {self.operand2}) = {self.result}")
     
 
+    def __repr__(self) -> str:
+        """
+        Return a detailed string representation of the Calculation instance.
+        
+        This method provides a more detailed string representation of the Calculation instance,
+        including the operation, operands, result, and timestamp.
+        This is useful for debugging and logging purposes.
+        
+        Returns:
+            str: A detailed string representation of the Calculation instance.
+        """
+        return (
+            f"Calculation(operation={self.operation}', "
+            f"operand1={self.operand1}, "
+            f"operand2={self.operand2}, "
+            f"result={self.result}, "
+            f"timestamp={self.timestamp.isoformat()})"
+        )
+
+    def __eq__(self, other: Any) -> bool:
+        """
+        Check equality between two Calculation instances.
+        
+        This method compares the operation, operands, and result of two Calculation instances
+        to determine if they are equal.
+        
+        Args:
+            other (Any): The object to compare with this Calculation instance.
+        
+        Returns:
+            bool: True if the other object is a Calculation instance with the same operation,
+                  operands, and result; False otherwise.
+        """
+        if not isinstance(other, Calculation):
+            return False
+        
+        return (
+            self.operation == other.operation and
+            self.operand1 == other.operand1 and
+            self.operand2 == other.operand2 and
+            self.result == other.result
+        )
+    
+    def format_result(self, precision: int = 10) -> str:
+        """
+        Format the result of the calculation to a specified precision.
+        
+        This method formats the result of the calculation to a string with a specified number
+        of decimal places, removing trailing zeros.
+        Args:
+            precision (int): The number of decimal places to round the result to. Default is 10.
+        Returns:
+            str: The formatted result as a string, rounded to the specified precision.
+        """
+        try:
+            # Remove trailing zeros and format to the specified precision
+            return str(self.result.normalize().quantize(
+                Decimal('0.' + '0' * precision)
+            ).normalize())
+        
+        except InvalidOperation: # pragma: no cover
+            # If normalization fails, return the result as is
+            return str(self.result) 
+        
