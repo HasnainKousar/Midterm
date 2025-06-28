@@ -147,7 +147,7 @@ class CalculatorConfig:
             Path: The path to the history file.
         """
         return Path(
-            os.getenv('CALCULATOR_HISTORY_FILE', str(self.history_dir / 'calculator_history.json'))
+            os.getenv('CALCULATOR_HISTORY_FILE', str(self.history_dir / 'calculator_history.csv'))
         ).resolve()
     
     def validate(self):
