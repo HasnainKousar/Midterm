@@ -240,15 +240,24 @@ class TestIntegerDivision(BaseOperationTest):
     }
 
 
+class TestPercentage(BaseOperationTest):
+    """ Test Percentage operation"""
 
+    operation_class = Percentage
+    valid_test_cases = {
+        "quarter_percentage": {"a": 25, "b": 100, "expected": 25},  # 25 is 25% of 100
+        "half_percentage": {"a": 50, "b": 100, "expected": 50},     # 50 is 50% of 100
+        "decimal_numbers": {"a": 12.5, "b": 50, "expected": 25},    # 12.5 is 25% of 50
+        "zero_numerator": {"a": 0, "b": 100, "expected": 0},        # 0 is 0% of 100
+    }
 
+    invalid_test_cases = {
+        "zero_base": {
+            "a": 25,
+            "b": 0,
+            "error": ValidationError,
+            "message": "Cannot calculate percentage with zero base value."
+        }
+    }
 
-    
-
-
-
-
-
-
- 
 
