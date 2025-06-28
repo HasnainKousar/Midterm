@@ -34,3 +34,33 @@ class HistoryObserver(ABC):
         """
         pass # pragma: no cover
 
+
+class LoggingObserver(HistoryObserver):
+    """
+    Observer that logs new Calculation events.
+    
+    Implements the Observer pattern by looking for new Calculation events
+    logging their details to a log file.
+
+    """
+
+    def update(self, calculation: Calculation) -> None:
+        """
+        Log the details of a new Calculation event.
+        
+        Args:
+            calculation (Calculation): The Calculation that was performed.
+        """
+        if calculation is None:
+            raise AttributeError("Calculation cannot be None")
+        logging.info(
+            f"Calculation performed: {calculation.operation.lower()} "
+            f"({calculation.operand1}, {calculation.operand2}) = "
+            f"{calculation.result}"
+        )
+    
+
+
+
+
+
