@@ -62,8 +62,10 @@ class Calculation:
             "power": lambda a, b: (
                 Decimal(pow(float(a), float(b))) if b >= 0 else self._raise_neg_power()
             ),
-            "root": lambda a, b: (
-                Decimal(pow(float(a), 1 / float(b))) if b > 0 else self._raise_neg_root()
+            "Root": lambda a, b: (
+                Decimal(pow(float(a), 1 / float(b)))
+                if a >= 0 and b != 0
+                else self._raise_invalid_root(a, b)
             ),
             "modulus": lambda a, b: a % b if b != 0 else self._raise_mod_zero(),
             "integerdivide": lambda a, b: a // b if b != 0 else self._raise_int_div_zero(),
@@ -81,3 +83,40 @@ class Calculation:
         except (InvalidOperation, ValueError, ArithmeticError) as e:
             raise OperationError(f"Calculation failed: {str(e)}")
         
+    @staticmethod
+    def _raise_div_zero():
+        """
+        Raise an OperationError for division by zero.
+        
+        This method is called when a division by zero is attempted.
+        
+        raises:
+            OperationError: Indicating that division by zero is not allowed.
+        """
+        raise OperationError("Division by zero is not allowed.")
+    
+    @staticmethod
+    def _raise_neg_power():
+        """
+        Raise an OperationError for negative power.
+        
+        This method is called when a negative power operation is attempted.
+        
+        raises:
+            OperationError: Indicating that exponent cannot be negative.
+        """
+        raise OperationError("Exponent cannot be negative.")
+    
+    @staticmethod
+    def _raise_invalid_root(a: Decimal, b: Decimal):
+        """
+        """
+
+        if b == 0:
+            raise OperationError("Zero root is not defined.")
+        
+        if a < 0:
+            raise OperationError("Cannot calculate root of a negative number.")
+        raise OperationError("Invalid root operation.")
+    
+    
