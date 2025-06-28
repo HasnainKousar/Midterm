@@ -261,3 +261,18 @@ class TestPercentage(BaseOperationTest):
     }
 
 
+class TestAbsoluteDifference(BaseOperationTest):
+    """ Test Absolute Difference operation"""
+
+    operation_class = AbsoluteDifference
+    valid_test_cases = {
+        "positive_integers": {"a": 5, "b": 3, "expected": 2},
+        "negative_integers": {"a": -5, "b": -3, "expected": 2},
+        "mixed_integers": {"a": 5, "b": -3, "expected": 8},
+        "decimal_numbers": {"a": 5.5, "b": 3.2, "expected": 2.3},
+        "zero_values": {"a": 0, "b": 0, "expected": 0},
+    }
+
+    invalid_test_cases = {} # No invalid cases for absolute difference
+
+
