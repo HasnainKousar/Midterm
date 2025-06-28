@@ -295,7 +295,7 @@ class TestOperationFactory:
             "modulus": Modulus,
             "integerdivide": IntegerDivision,
             "percentage": Percentage,
-            "absolute": AbsoluteDifference
+            "absolutedifference": AbsoluteDifference
         }
 
         for op_name, op_class in operation_map.items():
