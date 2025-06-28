@@ -323,18 +323,18 @@ class Percentage(Operation):
 
         """
         Validate the operands for the percentage operation.
-        This method checks if the second operand (percentage value) is zero, which would cause a
+        This method checks if the second operand (base value) is zero, which would cause a
         division by zero error.
 
         We override the base class method to add specific validation for percentage.
-        :param a: Base number
-        :param b: Percentage value
-        :raises ValidationError: If the second operand is zero.
+        :param a: Part value
+        :param b: Base value 
+        :raises ValidationError: If the base value is zero.
         """
         
         super().validate_operands(a, b)
         if b == 0:
-            raise ValidationError("Percentage value cannot be zero.")
+            raise ValidationError("Cannot calculate percentage with zero base value.")
         
     def execute(self, a: Decimal, b: Decimal) -> Decimal:
         """
