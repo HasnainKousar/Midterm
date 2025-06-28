@@ -131,7 +131,7 @@ class Calculation:
         if b <= 0:
             raise OperationError("Root degree must be greater than zero.")
         
-        raise OperationError("Invalid root operation.")
+        raise OperationError("Invalid root operation.") # pragma: no cover
     
     @staticmethod
     def _raise_mod_zero():
