@@ -48,7 +48,7 @@ class Operation(ABC):
         Returns:
             Decimal: Result of the operation.
         """
-        pass
+        pass # pragma: no cover
 
     def validate_operands(self, a: Decimal, b: Decimal) -> None:
         """
