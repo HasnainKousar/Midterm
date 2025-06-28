@@ -3,6 +3,11 @@
 ###########################
 
 """
+Test module for CalculatorConfig class.
+
+This module contains comprehensive unit tests for the CalculatorConfig class,
+which manages configuration settings for the calculator application.
+
 
 """
 
