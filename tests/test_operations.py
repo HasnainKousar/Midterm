@@ -193,9 +193,57 @@ class TestPower(BaseOperationTest):
         }
     }
 
-  
+
+class TestModulus(BaseOperationTest):
+    """ Test Modulus operation"""
+
+    operation_class = Modulus
+    valid_test_cases = {
+        "positive_integers": {"a": 5, "b": 3, "expected": 2},
+        "negative_integers": {"a": -5, "b": -3, "expected": -2},
+        "mixed_integers": {"a": 5, "b": -3, "expected": 2},
+        "decimal_numbers": {"a": 5.5, "b": 3.2, "expected": 2.3},
+        "zero_dividend": {"a": 0, "b": 1, "expected": 0},
+        "large_numbers": {"a": 1e10, "b": 1e10, "expected": 0},
+    }
+
+    invalid_test_cases = {
+        "zero_divisor": {
+            "a": 5,
+            "b": 0,
+            "error": ValidationError,
+            "message": "Modulus by zero is not allowed."
+        }
+    }
 
 
+class TestIntegerDivision(BaseOperationTest):
+    """ Test Integer Division operation"""
+
+    operation_class = IntegerDivision
+    valid_test_cases = {
+        "positive_integers": {"a": 6, "b": 3, "expected": 2},
+        "negative_integers": {"a": -6, "b": -3, "expected": 2},
+        "mixed_integers": {"a": 6, "b": -3, "expected": -2},
+        "decimal_numbers": {"a": 6.0, "b": 3.0, "expected": 2.0},
+        "zero_dividend": {"a": 0, "b": 1, "expected": 0},
+        "large_numbers": {"a": 1e10, "b": 1e10, "expected": 1},
+    }
+
+    invalid_test_cases = {
+        "zero_divisor": {
+            "a": 5,
+            "b": 0,
+            "error": ValidationError,
+            "message": "Integer division by zero is not allowed."
+        }
+    }
+
+
+
+
+
+    
 
 
 
