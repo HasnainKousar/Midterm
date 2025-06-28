@@ -2,6 +2,16 @@
 # Exception Hierarchy  #
 ########################
 
+"""
+This module defines custom exceptions for a calculator application.
+
+it provide meaningful error messages to guide the user in correcting their input.
+
+These exceptions are used to handle various error scenarios that may arise during
+calculator operations, such as validation errors, operation failures, and configuration issues.
+
+"""
+
 class CalculatorError(Exception):
     """
     Base class for all calculator-related exceptions.
