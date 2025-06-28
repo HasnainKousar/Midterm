@@ -77,7 +77,7 @@ class Calculation:
             "modulus": lambda a, b: a % b if b != 0 else self._raise_mod_zero(),
             "integerdivide": lambda a, b: a // b if b != 0 else self._raise_int_div_zero(),
             "percentage": lambda a, b: (a/ b) * 100 if b != 0 else self._raise_percent_zero(),
-            "absolute": lambda a, b: abs(a - b)
+            "absolutedifference": lambda a, b: abs(a - b)
         }
 
         op = operations.get(self.operation)
