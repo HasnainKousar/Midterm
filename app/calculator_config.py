@@ -93,3 +93,33 @@ class CalculatorConfig:
             'CALCULATOR_DEFAULT_ENCODING', 'utf-8'
         )
 
+    @property
+    def log_dir(self) -> Path:
+        """
+        Get the log directory path.
+            
+        Determines the directory path where log files will be stored.
+
+        Returns:
+            Path: The path to the log directory. 
+        """
+        return Path(
+            os.getenv('CALCULATOR_LOG_DIR', str(self.base_dir / 'logs'))
+        ).resolve()
+    
+
+    @property
+    def history_dir(self) -> Path:
+        """
+        Get the history directory path.
+        
+        Determines the directory path where calculation history files will be stored.
+
+        Returns:
+            Path: The path to the history directory.
+        """
+        return Path(
+            os.getenv('CALCULATOR_HISTORY_DIR', str(self.base_dir / 'history'))
+        ).resolve()
+    
+    
