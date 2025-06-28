@@ -81,3 +81,12 @@ def test_calculate_percentage():
 def test_calculate_percentage_by_zero():
     with pytest.raises(OperationError, match="Cannot calculate percentage with zero base value."):
         Calculation(operation='percentage', operand1=Decimal('200.0'), operand2=Decimal('0.0'))
+
+def test_calculate_absolute_difference():
+    calc = Calculation(operation='absolutedifference', operand1=Decimal('5.0'), operand2=Decimal('3.0'))
+    assert calc.result == Decimal('2.0')
+
+def test_calculate_unknown_operation():
+    with pytest.raises(OperationError, match="Unknown operation: invalid_operation"):
+        Calculation(operation='invalid_operation', operand1=Decimal('5.0'), operand2=Decimal('3.0'))
+
