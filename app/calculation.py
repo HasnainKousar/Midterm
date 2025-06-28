@@ -62,9 +62,9 @@ class Calculation:
             "power": lambda a, b: (
                 Decimal(pow(float(a), float(b))) if b >= 0 else self._raise_neg_power()
             ),
-            "Root": lambda a, b: (
+            "root": lambda a, b: (
                 Decimal(pow(float(a), 1 / float(b)))
-                if a >= 0 and b != 0
+                if a >= 0 and b > 0
                 else self._raise_invalid_root(a, b)
             ),
             "modulus": lambda a, b: a % b if b != 0 else self._raise_mod_zero(),
@@ -103,20 +103,64 @@ class Calculation:
         This method is called when a negative power operation is attempted.
         
         raises:
-            OperationError: Indicating that exponent cannot be negative.
+            OperationError: Indicating that negative exponent is not allowed for this operation.
         """
-        raise OperationError("Exponent cannot be negative.")
+        raise OperationError("Negative exponent is not allowed for this operation.")
     
     @staticmethod
     def _raise_invalid_root(a: Decimal, b: Decimal):
         """
-        """
-
-        if b == 0:
-            raise OperationError("Zero root is not defined.")
+        Raise an OperationError for invalid root operations.
         
+        This method is called when an invalid root operation is attempted,
+        such as negative base or invalid degree.
+        
+        raises:
+            OperationError: Indicating the specific root validation error.
+        """
         if a < 0:
-            raise OperationError("Cannot calculate root of a negative number.")
+            raise OperationError("Cannot calculate the root of a negative number.")
+        
+        if b <= 0:
+            raise OperationError("Root degree must be greater than zero.")
+        
         raise OperationError("Invalid root operation.")
     
+    @staticmethod
+    def _raise_mod_zero():
+        """
+        Raise an OperationError for modulus by zero.
+        
+        This method is called when a modulus operation with zero is attempted.
+        
+        raises:
+            OperationError: Indicating that modulus by zero is not allowed.
+        """
+        raise OperationError("Modulus by zero is not allowed.")
     
+
+    @staticmethod
+    def _raise_int_div_zero():
+        """
+        Raise an OperationError for integer division by zero.
+        
+        This method is called when an integer division by zero is attempted.
+        
+        raises:
+            OperationError: Indicating that integer division by zero is not allowed.
+        """
+        raise OperationError("Integer division by zero is not allowed.")
+    
+    @staticmethod
+    def _raise_percent_zero():
+        """
+        Raise an OperationError for percentage calculation with zero base value.
+        
+        This method is called when a percentage calculation with a zero base value is attempted.
+        
+        raises:
+            OperationError: Indicating that percentage calculation with zero base value is not allowed.
+        """
+        raise OperationError("Cannot calculate percentage with zero base value.")
+    
+
