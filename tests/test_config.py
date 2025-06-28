@@ -26,7 +26,7 @@ os.environ['CALCULATOR_HISTORY_DIR'] = './test_history'
 os.environ['CALCULATOR_LOG_FILE'] = './test_logs/test_log.log'
 os.environ['CALCULATOR_HISTORY_FILE'] = './test_history/test_history.csv'
 
-def clear_env_vars():
+def clear_env_vars(*args):
     for var in args:
         os.environ.pop(var, None)
 
@@ -60,4 +60,19 @@ def test_custom_config():
     assert config.max_input_value == Decimal('5000')
     assert config.default_encoding == 'ascii'
 
+
+def test_dir_properties():
+    """Test directory properties."""
+    clear_env_vars('CALCULATOR_LOG_DIR', 'CALCULATOR_HISTORY_DIR')
+    config = CalculatorConfig(base_dir=Path('./custom_base_dir'))
+    assert config.log_dir == Path('./custom_base_dir/logs').resolve()
+    assert config.history_dir == Path('./custom_base_dir/history').resolve()
+
+
+def test_file_properties():
+    """Test file properties."""
+    clear_env_vars('CALCULATOR_LOG_FILE', 'CALCULATOR_HISTORY_FILE')
+    config = CalculatorConfig(base_dir=Path('./custom_base_dir'))
+    assert config.log_file == Path('./custom_base_dir/logs/calculator.log').resolve()
+    assert config.history_file == Path('./custom_base_dir/history/calculator_history.csv').resolve()
 
