@@ -249,20 +249,20 @@ class Calculation:
     def __repr__(self) -> str:
         """
         Return a detailed string representation of the Calculation instance.
-        
-        This method provides a more detailed string representation of the Calculation instance,
-        including the operation, operands, result, and timestamp.
-        This is useful for debugging and logging purposes.
-        
-        Returns:
+
+        Provides a detailed and unambiguous string representation of the Calculation
+        instance, useful for debugging.
+
+        returns:
             str: A detailed string representation of the Calculation instance.
         """
         return (
-            f"Calculation(operation={self.operation}', "
+            f"Calculation(operation='{self.operation}', "
             f"operand1={self.operand1}, "
             f"operand2={self.operand2}, "
             f"result={self.result}, "
-            f"timestamp={self.timestamp.isoformat()})"
+            f"timestamp='{self.timestamp.isoformat()}')"
+
         )
 
     def __eq__(self, other: Any) -> bool:
