@@ -17,8 +17,34 @@ from app.exceptions import OperationError
 @dataclass
 class Calculation:
     """
-    
-    
+    A class representing a mathematical calculation.
+
+    This class encapsulates a mathematical operation with two operands,
+    automatically performs the calculation upon initialization, and stores 
+    the result along with a timestamp for tracking purposes.
+
+    The calculation is performed immediately when the object is created using
+    the __post_init__ method, which validates the operation and computes the result.
+
+    Attributes:
+        operation (str): The mathematical operation to perform. Must be one of:
+            'add', 'subtract', 'multiply', 'divide', 'power', 'root', 
+            'modulus', 'integerdivide', 'percentage', 'absolute'.
+        operand1 (Decimal): The first operand for the calculation.
+        operand2 (Decimal): The second operand for the calculation.
+        result (Decimal): The result of the calculation, automatically computed 
+            after initialization.
+        timestamp (datetime.datetime): The timestamp when the calculation was 
+            performed, automatically set to the current time.
+
+    Raises:
+        OperationError: If the operation is not recognized or if validation fails
+            (e.g., division by zero, negative exponents, etc.).
+
+    Examples:
+        >>> calc = Calculation("add", Decimal("5"), Decimal("3"))
+        >>> print(calc.result)  # 8
+        >>> print(calc.operation)  # "add"
     """
 
     #required fields
