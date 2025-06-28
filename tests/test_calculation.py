@@ -155,11 +155,33 @@ def test_repr_representation():
     assert repr(calc) == expected_repr
 
 
-
 def test_equality():
     calc1 = Calculation(operation="add", operand1=Decimal("2"), operand2=Decimal("3"))
     calc2 = Calculation(operation="add", operand1=Decimal("2"), operand2=Decimal("3"))
     calc3 = Calculation(operation="subtract", operand1=Decimal("5"), operand2=Decimal("3"))
     assert calc1 == calc2
     assert calc1 != calc3
+
+def test_equality_with_non_calculation_object():
+    """Test equality comparison with non-Calculation objects (covers line 283)."""
+    calc = Calculation(operation="add", operand1=Decimal("2"), operand2=Decimal("3"))
+    
+    # Test comparison with different types of objects
+    assert calc != "not a calculation"
+    assert calc != 42
+    assert calc != {"operation": "add", "operand1": 2, "operand2": 3}
+    assert calc != [1, 2, 3]
+
+
+def test_format_result():
+    calc = Calculation(operation="divide", operand1=Decimal("1"), operand2=Decimal("3"))
+    assert calc.format_result(precision=2) == "0.33"
+    assert calc.format_result(precision=10) == "0.3333333333"
+    assert calc.format_result(precision=0) == "0"
+
+
+
+
+
+
 
