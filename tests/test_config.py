@@ -26,3 +26,38 @@ os.environ['CALCULATOR_HISTORY_DIR'] = './test_history'
 os.environ['CALCULATOR_LOG_FILE'] = './test_logs/test_log.log'
 os.environ['CALCULATOR_HISTORY_FILE'] = './test_history/test_history.csv'
 
+def clear_env_vars():
+    for var in args:
+        os.environ.pop(var, None)
+
+
+
+def test_default_config():
+    config = CalculatorConfig()
+    
+    assert config.max_history_size == 100
+    assert config.auto_save is True
+    assert config.precision == 5
+    assert config.max_input_value == Decimal('1000000')
+    assert config.default_encoding == 'utf-8'
+    assert config.log_dir == Path('./test_logs').resolve()
+    assert config.history_dir == Path('./test_history').resolve()
+    assert config.log_file == Path('./test_logs/test_log.log').resolve()
+    assert config.history_file == Path('./test_history/test_history.csv').resolve()
+
+def test_custom_config():
+    """Test custom configuration settings."""
+    config = CalculatorConfig(
+        max_history_size=1000,
+        auto_save=True,
+        precision=6,
+        max_input_value=Decimal('5000'),
+        default_encoding='ascii',
+    )
+    assert config.max_history_size == 1000
+    assert config.auto_save is True
+    assert config.precision == 6
+    assert config.max_input_value == Decimal('5000')
+    assert config.default_encoding == 'ascii'
+
+
