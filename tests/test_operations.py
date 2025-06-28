@@ -276,3 +276,35 @@ class TestAbsoluteDifference(BaseOperationTest):
     invalid_test_cases = {} # No invalid cases for absolute difference
 
 
+class TestOperationFactory:
+    """
+    Test class for OperationFactory.
+    
+   
+    """
+
+    def test_create_valid_operation(self):
+        """Test creating a valid operation."""
+        operation_map = {
+            "add": Addition,
+            "subtract": Subtraction,
+            "multiply": Multiplication,
+            "divide": Division,
+            "power": Power,
+            "root": Root,
+            "modulus": Modulus,
+            "integerdivide": IntegerDivision,
+            "percentage": Percentage,
+            "absolute": AbsoluteDifference
+        }
+
+        for op_name, op_class in operation_map.items():
+            operation = OperationFactory.create_operation(op_name)
+            assert isinstance(operation, op_class)
+
+    def test_create_invalid_operation(self):
+        """Test creating an invalid operation."""
+        with pytest.raises(ValueError, match="Unkown operation type: invalid_operation"):
+            OperationFactory.create_operation("invalid_operation")
+
+
