@@ -55,20 +55,20 @@ class Calculation:
         
         """
         operations = {
-            "Addition": lambda a, b: a + b,
-            "Subtraction": lambda a, b: a - b,
-            "Multiplication": lambda a, b: a * b,
-            "Division": lambda a, b: a /b if b != 0 else self._raise_div_zero(),
-            "Power": lambda a, b: (
+            "add": lambda a, b: a + b,
+            "subtract": lambda a, b: a - b,
+            "multiply": lambda a, b: a * b,
+            "divide": lambda a, b: a /b if b != 0 else self._raise_div_zero(),
+            "power": lambda a, b: (
                 Decimal(pow(float(a), float(b))) if b >= 0 else self._raise_neg_power()
             ),
-            "Root": lambda a, b: (
+            "root": lambda a, b: (
                 Decimal(pow(float(a), 1 / float(b))) if b > 0 else self._raise_neg_root()
             ),
-            "Modulus": lambda a, b: a % b if b != 0 else self._raise_mod_zero(),
-            "Integer Division": lambda a, b: a // b if b != 0 else self._raise_int_div_zero(),
-            "Percentage": lambda a, b: (a/ b) * 100 if b != 0 else self._raise_percent_zero(),
-            "Absolute Division": lambda a, b: abs(a - b)
+            "modulus": lambda a, b: a % b if b != 0 else self._raise_mod_zero(),
+            "integerdivide": lambda a, b: a // b if b != 0 else self._raise_int_div_zero(),
+            "percentage": lambda a, b: (a/ b) * 100 if b != 0 else self._raise_percent_zero(),
+            "absolute": lambda a, b: abs(a - b)
         }
 
         op = operations.get(self.operation)
