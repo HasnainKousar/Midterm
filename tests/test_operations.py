@@ -304,7 +304,25 @@ class TestOperationFactory:
 
     def test_create_invalid_operation(self):
         """Test creating an invalid operation."""
-        with pytest.raises(ValueError, match="Unkown operation type: invalid_operation"):
+        with pytest.raises(ValueError, match="Unknown operation type: invalid_operation"):
             OperationFactory.create_operation("invalid_operation")
 
+
+    def test_register_operation(self):
+        """Test registering a new operation."""
+        class NewOperation(Operation):
+            def execute(self, a: Decimal, b: Decimal) -> Decimal:
+                return a + b
+            
+        OperationFactory.register_operation("new_op", NewOperation)
+        operation = OperationFactory.create_operation("new_op")
+        assert isinstance(operation, NewOperation)
+
+    def test_register_invalid_operation(self):
+        """Test registering an invalid operation class."""
+        class NotAnOperation:
+            pass
+
+        with pytest.raises(TypeError, match="operation_class must be a subclass of Operation"):
+            OperationFactory.register_operation("invalid_op", NotAnOperation)
 
