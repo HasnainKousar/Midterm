@@ -166,15 +166,14 @@ class Calculation:
 
     def to_dict(self) -> Dict[str, Any]:
         """ 
-        Now we serialize the Calculation instance to a dictionary.
+        Serialize the Calculation instance to a dictionary.
 
         This method converts the Calculation instance into a dictionary format,
-        which can be useful for storage or transmission.
+        which can be useful for storage, transmission, or persistence.
 
-        returns:
+        Returns:
             Dict[str, Any]: A dictionary representation of the Calculation instance.
         """
-
         return {
             "operation": self.operation,
             "operand1": str(self.operand1),
@@ -183,6 +182,50 @@ class Calculation:
             "timestamp": self.timestamp.isoformat(),
         }
     
-    
+    @staticmethod
+    def from_dict(data: Dict[str, Any]) -> "Calculation":
+        """
+        Deserialize a dictionary to create a Calculation instance.
+
+        This method reconstructs a Calculation instance from a dictionary,
+        which is useful for loading previously stored calculations. The result
+        is recalculated and verified against the saved result for data integrity.
+
+        Args:
+            data (Dict[str, Any]): A dictionary containing the calculation data
+                with keys: 'operation', 'operand1', 'operand2', 'result', 'timestamp'.
+
+        Returns:
+            Calculation: A new Calculation instance created from the provided dictionary.
+        
+        Raises:
+            OperationError: If the data is invalid or missing required fields.
+        """
+        try:
+            # Create the calculation object with the original operands
+            calc = Calculation(
+                operation=data['operation'],
+                operand1=Decimal(data['operand1']),
+                operand2=Decimal(data['operand2'])
+            )
+
+            # Set the timestamp from the saved data
+            calc.timestamp = datetime.datetime.fromisoformat(data['timestamp'])
+
+            # Verify the result matches (helps catch data corruption)
+            saved_result = Decimal(data['result'])
+            if calc.result != saved_result:
+                logging.warning(
+                    f"Loaded calculation result {saved_result} "
+                    f"differs from computed result {calc.result}"
+                )  # pragma: no cover
+
+            return calc
+
+        except (KeyError, InvalidOperation, ValueError) as e:
+            raise OperationError(f"Invalid calculation data: {str(e)}")
+        
+
+
     
 
