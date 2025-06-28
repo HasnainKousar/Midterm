@@ -398,7 +398,7 @@ class OperationFactory:
         "modulus": Modulus,
         "integerdivide": IntegerDivision,
         "percentage": Percentage,
-        "absolute": AbsoluteDifference
+        "absolutedifference": AbsoluteDifference
     }   
 
     @classmethod
