@@ -417,7 +417,7 @@ class OperationFactory:
 
 
         if not issubclass(operation_class, Operation):
-            raise TypeError("Operation class must be a subclass of Operation.")
+            raise TypeError("operation_class must be a subclass of Operation")
         cls._operations[name.lower()] = operation_class
 
 
@@ -442,7 +442,7 @@ class OperationFactory:
 
         operation_class = cls._operations.get(operation_type.lower())
         if not operation_class:
-            raise ValueError(f"Unkown operation type: {operation_type}")
+            raise ValueError(f"Unknown operation type: {operation_type}")
         return operation_class()
     
 
