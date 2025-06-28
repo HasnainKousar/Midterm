@@ -280,26 +280,26 @@ class IntegerDivision(Operation):
     """Class for integer division operation.
 
     Performs integer division of two decimal numbers, returning the quotient without the remainder.
+    This operation is also known as floor division.
+    It is different from regular division in that it returns an integer result.
     """
 
     def validate_operands(self, a, b):
         """
         Validate the operands for the integer division operation.
         This method checks if the second operand (divisor) is zero, which would cause a
-        division by zero error, and if both operands are integers.  
+        division by zero error.
 
         We override the base class method to add specific validation for integer division.
         :param a: First number (dividend)
         :param b: Second number (divisor)
-        :raises ValidationError: If the second operand is zero or if either operand is not an integer.
+        :raises ValidationError: If the second operand is zero.
         """
 
 
         super().validate_operands(a, b)
         if b == 0:
             raise ValidationError("Integer division by zero is not allowed.")
-        if not (a % 1 == 0 and b % 1 == 0):
-            raise ValidationError("Both operands must be integers for integer division.")
         
     def execute(self, a: Decimal, b: Decimal) -> Decimal:
         """
