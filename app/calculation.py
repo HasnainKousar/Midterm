@@ -164,3 +164,25 @@ class Calculation:
         raise OperationError("Cannot calculate percentage with zero base value.")
     
 
+    def to_dict(self) -> Dict[str, Any]:
+        """ 
+        Now we serialize the Calculation instance to a dictionary.
+
+        This method converts the Calculation instance into a dictionary format,
+        which can be useful for storage or transmission.
+
+        returns:
+            Dict[str, Any]: A dictionary representation of the Calculation instance.
+        """
+
+        return {
+            "operation": self.operation,
+            "operand1": str(self.operand1),
+            "operand2": str(self.operand2),
+            "result": str(self.result),
+            "timestamp": self.timestamp.isoformat(),
+        }
+    
+    
+    
+
