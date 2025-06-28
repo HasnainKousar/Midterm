@@ -66,5 +66,18 @@ def test_calculate_modulus_by_zero():
     with pytest.raises(OperationError, match="Modulus by zero is not allowed."):
         Calculation(operation='modulus', operand1=Decimal('5.0'), operand2=Decimal('0.0'))
 
+def test_calculate_integer_division():
+    calc = Calculation(operation='integerdivide', operand1=Decimal('5.0'), operand2=Decimal('3.0'))
+    assert calc.result == Decimal('1.0')
 
+def test_calculate_integer_division_by_zero():
+    with pytest.raises(OperationError, match="Integer division by zero is not allowed."):
+        Calculation(operation='integerdivide', operand1=Decimal('5.0'), operand2=Decimal('0.0'))
 
+def test_calculate_percentage():
+    calc = Calculation(operation='percentage', operand1=Decimal('200.0'), operand2=Decimal('50.0'))
+    assert calc.result == Decimal('400.0')
+
+def test_calculate_percentage_by_zero():
+    with pytest.raises(OperationError, match="Cannot calculate percentage with zero base value."):
+        Calculation(operation='percentage', operand1=Decimal('200.0'), operand2=Decimal('0.0'))
