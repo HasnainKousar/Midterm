@@ -122,4 +122,50 @@ class CalculatorConfig:
             os.getenv('CALCULATOR_HISTORY_DIR', str(self.base_dir / 'history'))
         ).resolve()
     
+    @property
+    def log_file(self) -> Path:
+        """
+        Get the log file path.
+        
+        Determines the file path for the log file.
+
+        Returns:
+            Path: The path to the log file.
+        """
+        return Path(
+            os.getenv('CALCULATOR_LOG_FILE', str(self.log_dir / 'calculator.log'))
+        ).resolve()
+    
+    @property
+    def history_file(self) -> Path:
+        """
+        Get the history file path.
+        
+        Determines the file path for the calculation history file.
+
+        Returns:
+            Path: The path to the history file.
+        """
+        return Path(
+            os.getenv('CALCULATOR_HISTORY_FILE', str(self.history_dir / 'calculator_history.json'))
+        ).resolve()
+    
+    def validate(self):
+        """
+        Validate the configuration settings.
+        
+        Checks if the configuration values are within acceptable ranges and formats.
+        
+        Raises:
+            ConfigurationError: If any configuration value is invalid.
+        """
+        if self.max_history_size <= 0:
+            raise ConfigurationError("Maximum history size must be a positive integer.")
+        
+        if self.precision < 0:
+            raise ConfigurationError("Precision must be a non-negative integer.")
+        
+        if self.max_input_value <= 0:
+            raise ConfigurationError("Maximum input value must be a positive number.")
+        
     
