@@ -41,3 +41,8 @@ def test_calculate_power():
     calc = Calculation(operation='power', operand1=Decimal('2.0'), operand2=Decimal('3.0'))
     assert calc.result == Decimal('8.0')
 
+def test_calculate_power_negative_exponent():
+    with pytest.raises(OperationError, match="Negative exponent is not allowed."):
+        Calculation(operation='power', operand1=Decimal('2.0'), operand2=Decimal('-3.0'))
+
+
