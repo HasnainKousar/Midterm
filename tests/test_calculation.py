@@ -46,3 +46,7 @@ def test_calculate_power_negative_exponent():
         Calculation(operation='power', operand1=Decimal('2.0'), operand2=Decimal('-3.0'))
 
 
+def test_calculate_root():
+    calc = Calculation(operation='root', operand1=Decimal('9.0'), operand2=Decimal('2.0'))
+    assert calc.result == Decimal('3.0')
+
