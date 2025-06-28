@@ -76,3 +76,25 @@ def test_file_properties():
     assert config.log_file == Path('./custom_base_dir/logs/calculator.log').resolve()
     assert config.history_file == Path('./custom_base_dir/history/calculator_history.csv').resolve()
 
+def test_invalid_max_history_size():
+    """Test invalid max history size."""
+    with pytest.raises(ConfigurationError, match="Maximum history size must be a positive integer."):
+        config = CalculatorConfig(max_history_size=-1)
+        config.validate()
+
+def test_invalid_precision():
+    """Test invalid precision."""
+    with pytest.raises(ConfigurationError, match="Precision must be a non-negative integer."):
+        config = CalculatorConfig(precision=-1)
+        config.validate()
+
+
+
+def test_invalid_max_input_value():
+    """Test invalid max input value."""
+    with pytest.raises(ConfigurationError, match="Maximum input value must be a positive number."):
+        config = CalculatorConfig(max_input_value=Decimal('-10'))
+        config.validate()
+
+
+
