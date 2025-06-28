@@ -315,7 +315,8 @@ class IntegerDivision(Operation):
 class Percentage(Operation):
     """ Class for percentage operation.
 
-    Performs the calculation of a percentage of a number.
+    Calculate the percentage of one number with respect to another 
+    (e.g., Percentage(a, b) computes (a / b) * 100).
 
     """
 
@@ -327,8 +328,8 @@ class Percentage(Operation):
         division by zero error.
 
         We override the base class method to add specific validation for percentage.
-        :param a: Part value
-        :param b: Base value 
+        :param a: Number to calculate percentage of
+        :param b: Base value (total)
         :raises ValidationError: If the base value is zero.
         """
         
@@ -340,9 +341,12 @@ class Percentage(Operation):
         """
         Execute the percentage operation.
         
-        :param a: Base number
-        :param b: Percentage value
-        :return: Result of the percentage operation
+        Calculates what percentage 'a' is of 'b' using the formula (a / b) * 100.
+        For example: 25 is 25% of 100, so Percentage(25, 100) returns 25.
+        
+        :param a: Number to calculate percentage of
+        :param b: Base value (total)
+        :return: Percentage result (a/b * 100)
         """
         self.validate_operands(a, b)
         return (a/ b) * 100 
