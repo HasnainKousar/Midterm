@@ -50,3 +50,21 @@ def test_calculate_root():
     calc = Calculation(operation='root', operand1=Decimal('9.0'), operand2=Decimal('2.0'))
     assert calc.result == Decimal('3.0')
 
+def test_calculate_root_negative_operand():
+    with pytest.raises(OperationError, match="Cannot calculate the root of a negative number."):
+        Calculation(operation='root', operand1=Decimal('-9.0'), operand2=Decimal('2.0'))
+
+def test_calculate_root_zero_exponent():
+    with pytest.raises(OperationError, match="Root degree must be greater than zero."):
+        Calculation(operation='root', operand1=Decimal('9.0'), operand2=Decimal('0.0'))
+
+def test_calculate_modulus():
+    calc = Calculation(operation='modulus', operand1=Decimal('5.0'), operand2=Decimal('3.0'))
+    assert calc.result == Decimal('2.0')
+
+def test_calculate_modulus_by_zero():
+    with pytest.raises(OperationError, match="Modulus by zero is not allowed."):
+        Calculation(operation='modulus', operand1=Decimal('5.0'), operand2=Decimal('0.0'))
+
+
+
