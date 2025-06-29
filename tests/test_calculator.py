@@ -1,0 +1,59 @@
+###########################
+# tests/test_calculator.py
+###########################
+
+"""
+
+
+"""
+
+import datetime
+import logging
+from pathlib import Path
+import pandas as pd
+import pytest
+from unittest.mock import Mock, patch, PropertyMock
+from decimal import Decimal
+from tempfile import TemporaryDirectory
+
+from app.calculator import Calculator
+from app.calculator_repl import start_calculator_repl
+from app.calculator_config import CalculatorConfig
+from app.exceptions import OperationError, ValidationError
+from app.history import LoggingObserver, AutoSaverObserver
+from app.operations import OperationFactory
+
+# fixute to create a temporary directory for testing
+@pytest.fixture
+def calculator():
+    """ """
+    with TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir)
+        config = CalculatorConfig(base_dir=temp_path)
+
+        # patch properties to use the temporary directory
+        with patch.object(CalculatorConfig, 'log_dir', new_callable=PropertyMock) as mock_log_dir, \
+             patch.object(CalculatorConfig, 'log_file', new_callable=PropertyMock) as mock_log_file, \
+             patch.object(CalculatorConfig, 'history_dir', new_callable=PropertyMock) as mock_history_dir, \
+             patch.object(CalculatorConfig, 'history_file', new_callable=PropertyMock) as mock_history_file:
+            
+            # set the mock return values to the temporary directory
+            mock_log_dir.return_value = temp_path / 'logs'
+            mock_log_file.return_value = temp_path / 'logs' / 'calculator.log'
+            mock_history_dir.return_value = temp_path / 'history'
+            mock_history_file.return_value = temp_path / 'history' / 'calculator_history.csv'
+
+            # return a Calculator instance with the mocked config
+            yield Calculator(config=config)
+
+#  Test for Calculator initialization
+def test_calculator_initialization(calculator):
+    """ """
+    assert calculator.history == []
+    assert calculator.undo_stack == []
+    assert calculator.redo_stack == []
+    assert calculator.operation_strategy is None
+
+
+
+
