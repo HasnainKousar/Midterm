@@ -112,7 +112,43 @@ def start_calculator_repl():
                     except Exception as e:
                         print(f"Error saving history: {e}")
                     continue
-                
 
+                if command in['add', 'subtract', 'multiply', 'divide', 'power', 'root', 'modulus', 'integerdivide', 'percentage', 'absolutedifference']:
+                    # Perform a calculation based on the command
+                    try:
+                        print("\n Enter number (or cancel to abort):")
+                        a = input("First number: ")
+                        if a.lower() == 'cancel':
+                            print("Operation cancelled.")
+                            continue
+                        b = input("Second number: ")
+                        if b.lower() == 'cancel':
+                            print("Operation cancelled.")
+                            continue
+
+                        # Create appropriate operation instance using the factory pattern
+                        operation = OperationFactory.create_operation(command)
+                        calc.set_operation(operation)
+
+                        # Perform the calculation
+                        result = calc.perform_operation(a, b)
+
+                        # Normalize the result to Decimal for consistent output
+                        if isinstance(result, Decimal):
+                            result = result.normalize()
+                        
+                        print(f"\nResult: {result}")
+
+                    except (OperationError, ValidationError) as e:
+                        # Handle specific operation errors
+                        print(f"Error: {e}")
+                    except Exception as e:
+                        # Handle any other unexpected errors
+                        print(f"An unexpected error occurred: {e}")
+                    continue
+                # Handle unknown commands
+                print(f"Unknown command: '{command}'. Type 'help' for available commands.")
+
+            
 
 
