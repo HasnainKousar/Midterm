@@ -119,7 +119,7 @@ class Calculator:
             )
             logging.info(f'logging initialized at {log_file}')
         except Exception as e:
-            print(f'Failed to set up logging: {e}')
+            print(f'Error setting up logging: {e}')
             raise
 
     def _setup_directories(self) -> None:
@@ -434,17 +434,6 @@ class Calculator:
         return True  # Redo successful
 
         
-
-    
-    
-    
-    
-
-
-
-
-
-
 
 
 
