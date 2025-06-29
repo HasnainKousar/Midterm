@@ -43,7 +43,7 @@ def start_calculator_repl():
                 if command == "help":
                     # Display the available commands
                     print("\nAvailable commands:")
-                    print("  add, subtract, multiply, divide, power, root, modulus, integerdivide, percentage, absolutedifference")
+                    print("  add, subtract, multiply, divide, power, root, modulus, integerdivision, percentage, absolutedifference")
                     print("  history - Show calculation history")
                     print("  undo - Undo the last operation")
                     print("  redo - Redo the last undone operation")
@@ -113,7 +113,7 @@ def start_calculator_repl():
                         print(f"Error saving history: {e}")
                     continue
 
-                if command in['add', 'subtract', 'multiply', 'divide', 'power', 'root', 'modulus', 'integerdivide', 'percentage', 'absolutedifference']:
+                if command in['add', 'subtract', 'multiply', 'divide', 'power', 'root', 'modulus', 'integerdivision', 'percentage', 'absolutedifference']:
                     # Perform a calculation based on the command
                     try:
                         print("\n Enter number (or cancel to abort):")
@@ -167,9 +167,13 @@ def start_calculator_repl():
         logging.error(f"Failed to start calculator REPL: {e}")
         raise 
 
-if __name__ == "__main__":
-    # Start the calculator REPL when the script is run directly
-    start_calculator_repl()
+
+#Uncomment the following lines to run the REPL when this script is executed directly
+# if __name__ == "__main__":
+#     # Start the calculator REPL when the script is run directly
+#     start_calculator_repl()
+
+
 
 
 
