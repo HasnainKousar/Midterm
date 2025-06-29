@@ -166,6 +166,17 @@ def test_perform_operation_operation_error(calculator):
     with pytest.raises(OperationError, match="No operation set. Please set an operation before performing calculations."):
         calculator.perform_operation(5, 4)
 
+def test_perform_operation_exception(calculator):
+    """Test for exception when performing operation."""
+    # Create a mock operation that raises an exception
+    operation = Mock()
+    operation.perform.side_effect = Exception("Operation failed")
+    calculator.set_operation(operation)
+    
+    with pytest.raises(OperationError, match="Operation failed"):
+        calculator.perform_operation(5, 4)
+
+
 
 # Test for undo and redo operations
 def test_undo_operation(calculator):
@@ -262,9 +273,6 @@ def test_history_exceeds_max_size(calculator):
     calculator.perform_operation(3, 2)
     # Check that the history only contains one entry
     assert len(calculator.history) == 1
-
-
-
 
 
 
