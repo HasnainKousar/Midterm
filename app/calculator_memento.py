@@ -33,3 +33,15 @@ class CalculatorMemento:
             'timestamp': self.timestamp.isoformat()
         }
     
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'CalculatorMemento':
+        """
+        
+        """
+        return cls(
+            history=[Calculation.from_dict(calc) for calc in data['history']],
+            timestamp=datetime.datetime.fromisoformat(data['timestamp'])
+        )
+    
+
+    
