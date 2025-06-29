@@ -285,8 +285,40 @@ def test_history_exceeds_max_size(calculator):
     # Check that the history only contains one entry
     assert len(calculator.history) == 1
 
+def test_saving_history_exception(calculator):
+    """Test that saving history raises an exception when file cannot be written."""
+    # Mock the to_csv method to raise an exception
+    with patch('app.calculator.pd.DataFrame.to_csv', side_effect=Exception("File write error")):
+        with pytest.raises(OperationError, match="Failed to save history: File write error"):
+            calculator.save_history()
+
+@patch('app.calculator.logging.error')
+def test_load_history_exception(mock_logging_error, calculator):
+    """Test that load_history handles exceptions correctly."""
+    # Clear any existing history
+    calculator.history.clear()
+    
+    # Mock pd.read_csv to raise an exception
+    with patch('app.calculator.pd.read_csv') as mock_read_csv:
+        mock_read_csv.side_effect = Exception("CSV read failed")
+        
+        # Mock pathlib.Path.exists to return True so we enter the try block
+        with patch('pathlib.Path.exists', return_value=True):
+            with pytest.raises(OperationError, match="Failed to load history: CSV read failed"):
+                calculator.load_history()
+            
+            # Verify the error was logged
+            mock_logging_error.assert_called_once_with("Failed to load history: CSV read failed")
+
+
+
+
+
+
 
     
+
+   
 
 
 
