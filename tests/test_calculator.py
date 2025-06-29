@@ -55,6 +55,8 @@ def test_calculator_initialization(calculator):
     assert calculator.operation_strategy is None
 
 
+
+
 # Test Logging Setup
 
 @patch('app.calculator.logging.info')
@@ -69,6 +71,29 @@ def test_logging_setup(logging_info_mock):
         calculator = Calculator(CalculatorConfig())
         logging_info_mock.assert_any_call("Calculator initialized with configuration")
 
+# Test for logging history failed
+@patch('app.calculator.logging.warning')
+@patch('app.calculator.logging.info')
+def test_calculator_init_logging_history_failed(logging_info_mock, logging_warning_mock):
+    """Test that logging setup is called during calculator initialization."""
+    with patch.object(CalculatorConfig, 'log_dir', new_callable=PropertyMock) as mock_log_dir, \
+         patch.object(CalculatorConfig, 'log_file', new_callable=PropertyMock) as mock_log_file:
+        
+        mock_log_dir.return_value = Path('/tmp/logs')
+        mock_log_file.return_value = Path('/tmp/logs/calculator.log')
+
+        # Mock the load_history to raise an exception
+        with patch.object(Calculator, 'load_history') as mock_load_history:
+            mock_load_history.side_effect = Exception("Failed to load history")
+            
+            calculator = Calculator(CalculatorConfig())
+            
+            # Verify the warning was logged
+            logging_warning_mock.assert_called_once_with("Failed to load existing history: Failed to load history")
+            # Verify initialization still completed successfully
+            logging_info_mock.assert_any_call("Calculator initialized with configuration")
+
+        
 # Test for adding and removing observers
 def test_add_observer(calculator):
     """ """
@@ -184,6 +209,9 @@ def test_clear_history(calculator):
     assert calculator.history == []
     assert calculator.undo_stack == []
     assert calculator.redo_stack == []
+
+# Test history management negative cases
+
 
 
 
