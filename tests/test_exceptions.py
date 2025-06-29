@@ -40,7 +40,21 @@ def test_operation_error_specific_exception():
     assert str(exc_info.value) == "Specific operation error"
 
 
-    
+def test_configuration_error_is_calculator_error():
+    with pytest.raises(CalculatorError) as exc_info:
+        raise ConfigurationError("Configuration error")
+    assert isinstance(exc_info.value, CalculatorError)
+    assert str(exc_info.value) == "Configuration error"
+
+def test_configuration_error_specific_exception():
+    with pytest.raises(ConfigurationError) as exc_info:
+        raise ConfigurationError("Specific configuration error")
+    assert str(exc_info.value) == "Specific configuration error"
+
+
+
+
+
 
 
 
