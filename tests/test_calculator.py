@@ -259,6 +259,17 @@ def test_clear_history(calculator):
     assert calculator.undo_stack == []
     assert calculator.redo_stack == []
 
+def test_save_history_with_empty_history(calculator):
+    """Test saving history when history is empty."""
+    # Clear the history
+    calculator.clear_history()
+    # Save the history
+    calculator.save_history()
+    # Check that no error is raised and history remains empty
+    assert calculator.history == []
+    assert calculator.undo_stack == []
+    assert calculator.redo_stack == []
+
 # Test history management negative cases
 
 def test_history_exceeds_max_size(calculator):
@@ -273,6 +284,9 @@ def test_history_exceeds_max_size(calculator):
     calculator.perform_operation(3, 2)
     # Check that the history only contains one entry
     assert len(calculator.history) == 1
+
+
+    
 
 
 
