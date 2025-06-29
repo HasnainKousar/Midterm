@@ -311,6 +311,38 @@ def test_load_history_exception(mock_logging_error, calculator):
             mock_logging_error.assert_called_once_with("Failed to load history: CSV read failed")
 
 
+def test_get_history_dataframe(calculator):
+    """Test that get_history_dataframe returns a DataFrame with correct columns."""
+    # Perform an operation
+    operation = OperationFactory.create_operation('add')
+    calculator.set_operation(operation)
+    calculator.perform_operation(5, 4)
+    
+    # Get the history DataFrame
+    df = calculator.get_history_dataframe()
+    
+    # Check that the DataFrame has the expected columns
+    expected_columns = ['operation', 'operand1', 'operand2', 'result', 'timestamp']
+    
+    # Check that the DataFrame has one row with correct data
+    assert len(df) == 1
+    assert df.iloc[0]['operation'] == 'Addition'
+    assert df.iloc[0]['result'] == '9'
+
+def test_show_history(calculator):
+    """Test that show_history returns a list of formatted strings."""
+    # Perform an operation
+    operation = OperationFactory.create_operation('add')
+    calculator.set_operation(operation)
+    calculator.perform_operation(5, 4)
+    
+    # Show the history
+    history_list = calculator.show_history()
+    
+    # Check that we get a list with one formatted entry
+    assert isinstance(history_list, list)
+    assert len(history_list) == 1
+    assert history_list[0] == "Addition(5, 4) = 9"
 
 
 
