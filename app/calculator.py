@@ -26,6 +26,7 @@ import logging
 from operator import le
 import os
 from pathlib import Path
+from tkinter import N
 from typing import List, Optional, Union, Any, Dict
 import pandas as pd
 
@@ -117,7 +118,91 @@ class Calculator:
         """
         self.config.history_dir.mkdir(parents=True, exist_ok=True)
 
+    def add_observer(self, observer: HistoryObserver) -> None:
+        """
+        
+        """
+        self.observers.append(observer)
+        logging.info(f"Added observer: {observer.__class__.__name__}")
 
+
+    def remove_observer(self, observer: HistoryObserver) -> None:
+        """
+        
+        """
+        self.observers.remove(observer)
+        logging.info(f"Removed observer: {observer.__class__.__name__}")
+
+    def notify_observers(self, calculation: Calculation) -> None:
+        """
+        
+        """
+        for observer in self.observers:
+            observer.update(calculation)
+
+    
+    def set_operation(self, operation: Operation) -> None:
+        """
+        
+        """
+
+        self.operation_strategy = operation
+        logging.info(f"Set operation: {operation}")
+
+    
+    def perform_operation(
+            self,
+            a: Union[str, Number],
+            b: Union[str, Number]
+    ) -> CalculationResult:
+        """
+        """
+        if not self.operation_strategy:
+            raise OperationError("No operation set. Please set an operation before performing calculations.")
+        
+        try:
+             # validate and convert inputs to Decimal
+            validate_a = InputValidator.validate_number(a, self.config)
+            validate_b = InputValidator.validate_number(b, self.config)
+
+            # excute the operation
+            result = self.operation_strategy.execute(validate_a, validate_b)
+
+            # Create a new Calculation object with the operation details
+            calculation = Calculation(
+                operation=str(self.operation_strategy),
+                operand1=validate_a,
+                operand2=validate_b,
+            )
+
+            # save the current state to the undo stack 
+            self.undo_stack.append(CalculatorMemento(self.history.copy()))
+
+            # clear the redo stack
+            self.redo_stack.clear()
+
+            # add the calculation to history
+            self.history.append(calculation)
+
+            # ensure history does not exceed max size
+            if len(self.history) > self.config.max_history_size:
+                self.history.pop(0)
+
+            # notify observers about the new calculation
+            self.notify_observers(calculation)
+
+            return result
+        
+        except ValidationError as e:
+            # log and re-raise validation errors
+            logging.error(f"Validation error: {str(e)}")
+            raise 
+        except Exception as e:
+            # log any other exceptions that occur during operation
+            logging.error(f"Operation failed: {str(e)}")
+            raise OperationError(f"Operation failed: {str(e)}")
+        
+    
     
 
 
