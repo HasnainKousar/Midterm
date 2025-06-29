@@ -304,8 +304,45 @@ class Calculator:
             for calc in self.history
         ]
     
-    
+    def clear_history(self) -> None:
+        """
         
+        """
+        self.history.clear()
+        self.undo_stack.clear()
+        self.redo_stack.clear()
+        logging.info("History cleared successfully.")
+
+    
+    def undo(self) -> bool:
+        """
+        
+        """
+        if not self.undo_stack:
+            return False  # No mementos to undo
+        
+        # Pop the last memento from the undo stack
+        memento = self.undo_stack.pop()
+        # Push the current state to the redo stack
+        self.redo_stack.append(CalculatorMemento(self.history.copy()))
+        # Restore the history from the memento
+        self.history = memento.history.copy()
+        return True  # Undo successful
+    
+    def redo(self) -> bool:
+        """
+        
+        """
+        if not self.redo_stack:
+            return False # No mementos to redo
+        
+        # Pop the last memento from the redo stack
+        memento = self.redo_stack.pop()
+        # Push the current state to the undo stack
+        self.undo_stack.append(CalculatorMemento(self.history.copy()))
+        # Restore the history from the memento
+        self.history = memento.history.copy()
+        return True  # Redo successful
 
         
 
