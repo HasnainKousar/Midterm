@@ -92,16 +92,45 @@ def test_perform_operation_addition(calculator):
     assert result == Decimal('9')
 
 def test_perform_operation_validation_error(calculator):
-    """ """
+    """Test for validation error when performing operation."""
     calculator.set_operation(OperationFactory.create_operation('add'))
     with pytest.raises(ValidationError):
         calculator.perform_operation("five", 4)
 
 
 def test_perform_operation_operation_error(calculator):
-    """ """
+    """Test for operation error when no operation is set."""
     with pytest.raises(OperationError, match="No operation set. Please set an operation before performing calculations."):
         calculator.perform_operation(5, 4)
+
+
+# Test for undo and redo operations
+def test_undo_operation(calculator):
+    """Test for undoing an operation."""
+    # create an operation and perform it
+    operation = OperationFactory.create_operation('add')
+    calculator.set_operation(operation)
+    calculator.perform_operation(5, 4)
+    # undo the operation
+    calculator.undo()
+    # check that the history is empty after undo
+    assert len(calculator.history) == 0
+
+
+def test_redo_operation(calculator):
+    """Test for redoing an operation."""
+    # create an operation and perform it
+    operation = OperationFactory.create_operation('add')
+    calculator.set_operation(operation)
+    calculator.perform_operation(5, 4)
+    # undo the operation
+    calculator.undo()
+    # redo the operation
+    calculator.redo()
+    # check that the history has one entry after redo
+    assert len(calculator.history) == 1
+   
+
 
 
 
