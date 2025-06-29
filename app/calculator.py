@@ -23,6 +23,7 @@ Key Concepts:
 
 from decimal import Decimal
 import logging
+from operator import le
 import os
 from pathlib import Path
 from typing import List, Optional, Union, Any, Dict
@@ -87,6 +88,38 @@ class Calculator:
 
         # log the initialization of the calculator
         logging.info("Calculator initialized with configuration")
+
+    
+    def _setup_logging(self):
+        """
+        
+        """
+
+        try:
+            # make sure that log directory exists
+            os.makedirs(self.config.log_dir, exist_ok=True)
+            log_file = self.config.log_file.resolve()
+
+            logging.basicConfig(
+                filename = str(log_file),
+                level = logging.INFO,
+                format = '%(asctime)s - %(levelname)s - %(message)s',
+                force= True  # Force reconfiguration of logging
+            )
+            logging.info(f'logging initialized at {log_file}')
+        except Exception as e:
+            print(f'Failed to set up logging: {e}')
+            raise
+
+    def _setup_directories(self) -> None:
+        """
+
+        """
+        self.config.history_dir.mkdir(parents=True, exist_ok=True)
+
+
+    
+
 
 
 
