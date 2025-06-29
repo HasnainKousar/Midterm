@@ -69,5 +69,19 @@ def test_logging_setup(logging_info_mock):
         calculator = Calculator(CalculatorConfig())
         logging_info_mock.assert_any_call("Calculator initialized with configuration")
 
+# Test for adding and removing observers
+def test_add_observer(calculator):
+    """ """
+    observer = LoggingObserver()
+    calculator.add_observer(observer)
+    assert observer in calculator.observers
+
+def test_remove_observer(calculator):
+    """ """
+    observer = LoggingObserver()
+    calculator.add_observer(observer)
+    calculator.remove_observer(observer)
+    assert observer not in calculator.observers
+
 
 
