@@ -203,6 +203,19 @@ def test_redo_operation(calculator):
     calculator.redo()
     # check that the history has one entry after redo
     assert len(calculator.history) == 1
+
+#Test for undo and redo operations with empty stacks
+def test_undo_empty_stack(calculator):
+    """Test for undoing when the undo stack is empty."""
+    result = calculator.undo()
+    assert result is False
+
+def test_redo_empty_stack(calculator):
+    """Test for redoing when the redo stack is empty."""
+    result = calculator.redo()
+    assert result is False
+
+
    
 
 # Test for saving and loading history
@@ -335,14 +348,14 @@ def test_show_history(calculator):
     operation = OperationFactory.create_operation('add')
     calculator.set_operation(operation)
     calculator.perform_operation(5, 4)
-    
     # Show the history
     history_list = calculator.show_history()
-    
     # Check that we get a list with one formatted entry
     assert isinstance(history_list, list)
     assert len(history_list) == 1
     assert history_list[0] == "Addition(5, 4) = 9"
+
+
 
 
 
