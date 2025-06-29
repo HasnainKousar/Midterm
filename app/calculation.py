@@ -8,40 +8,18 @@ import datetime
 from decimal import Decimal, InvalidOperation
 import logging
 from typing import Any, Dict
-
-
-
 from app.exceptions import OperationError
 
 """
 Calculation Module
 
-This module provides a robust, class-based architecture for mathematical operations
+This module provides class-based architecture for mathematical operations
 with comprehensive error handling, validation, and serialization capabilities.
 
 The main component is the Calculation class, which encapsulates mathematical
 operations with automatic result computation, timestamping, and validation.
 It supports serialization to dictionary format for persistence and includes
 comprehensive error handling for edge cases.
-
-Key Features:
-- Automatic result computation and validation
-- Timestamping of calculations
-- Support for basic arithmetic operations (add, subtract, multiply, divide)
-- Advanced operations (power, sqrt, absolutedifference)
-- Comprehensive error handling with custom exceptions
-- Serialization and deserialization capabilities
-- String representation and formatting methods
-- Equality comparison support
-
-Classes:
-    Calculation: Main class for encapsulating mathematical operations
-
-Example:
-    >>> calc = Calculation(Decimal('10'), Decimal('5'), 'add')
-    >>> print(calc.result)  # Decimal('15')
-    >>> calc_dict = calc.to_dict()
-    >>> restored_calc = Calculation.from_dict(calc_dict)
 """
 
 @dataclass
@@ -92,22 +70,22 @@ class Calculation:
         
         """
         operations = {
-            "add": lambda a, b: a + b,
-            "subtract": lambda a, b: a - b,
-            "multiply": lambda a, b: a * b,
-            "divide": lambda a, b: a /b if b != 0 else self._raise_div_zero(),
-            "power": lambda a, b: (
+            "Addition": lambda a, b: a + b,
+            "Subtraction": lambda a, b: a - b,
+            "Multiplication": lambda a, b: a * b,
+            "Division": lambda a, b: a /b if b != 0 else self._raise_div_zero(),
+            "Power": lambda a, b: (
                 Decimal(pow(float(a), float(b))) if b >= 0 else self._raise_neg_power()
             ),
-            "root": lambda a, b: (
+            "Root": lambda a, b: (
                 Decimal(pow(float(a), 1 / float(b)))
                 if a >= 0 and b > 0
                 else self._raise_invalid_root(a, b)
             ),
-            "modulus": lambda a, b: a % b if b != 0 else self._raise_mod_zero(),
-            "integerdivide": lambda a, b: a // b if b != 0 else self._raise_int_div_zero(),
-            "percentage": lambda a, b: (a/ b) * 100 if b != 0 else self._raise_percent_zero(),
-            "absolutedifference": lambda a, b: abs(a - b)
+            "Modulus": lambda a, b: a % b if b != 0 else self._raise_mod_zero(),
+            "IntegerDivision": lambda a, b: a // b if b != 0 else self._raise_int_div_zero(),
+            "Percentage": lambda a, b: (a/ b) * 100 if b != 0 else self._raise_percent_zero(),
+            "AbsoluteDifference": lambda a, b: abs(a - b)
         }
 
         op = operations.get(self.operation)
