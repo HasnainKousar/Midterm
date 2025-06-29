@@ -73,5 +73,46 @@ def start_calculator_repl():
                             print(f"{idx}. {entry}")
                     continue
 
+                if command == "clear":
+                    # Clear the calculation history
+                    calc.clear_history()
+                    print("History cleared.")
+                    continue
+
+                if command == "undo":
+                    # Undo the last operation
+                    if calc.undo():
+                        print("Last operation undone.")
+                    else:
+                        print("No operations to undo.")
+                    continue
+
+                if command == "redo":
+                    # Redo the last undone operation
+                    if calc.redo():
+                        print("Last operation redone.")
+                    else:
+                        print("No operations to redo.")
+                    continue
+
+                if command == "load":
+                    # Load history from a file
+                    try:
+                        calc.load_history()
+                        print("History loaded successfully.")
+                    except Exception as e:
+                        print(f"Error loading history: {e}")
+                    continue
+
+                if command == "save":
+                    # Save the current history to a file
+                    try:
+                        calc.save_history()
+                        print("History saved successfully.")
+                    except Exception as e:
+                        print(f"Error saving history: {e}")
+                    continue
                 
+
+
 
