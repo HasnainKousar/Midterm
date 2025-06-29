@@ -3,7 +3,10 @@
 #########################
 
 """
+Unit tests for the history module.
 
+This module contains tests for the observer pattern implementation,
+including LoggingObserver and AutoSaverObserver functionality.
 """
 
 import logging
@@ -69,6 +72,22 @@ def test_autosave_observer_does_not_trigger_save_when_auto_save_disabled(mock_lo
 
 
 
+######################
+# negative test cases
+######################
+
+def test_autosave_observer_invalid_calculator():
+    """Test AutoSaverObserver raises TypeError if calculator does not have required attributes."""
+    with pytest.raises(TypeError):
+        AutoSaverObserver(calculator=None)
 
 
+def test_autosave_observer_no_calculation():
+    """Test that AutoSaverObserver does not save if no calculation is provided."""
+    calculator_mock = Mock(spec=Calculator)
+    calculator_mock.config = Mock(spec=CalculatorConfig)
+    calculator_mock.config.auto_save = True
+    observer = AutoSaverObserver(calculator_mock)
 
+    with pytest.raises(AttributeError):
+        observer.update(None)
