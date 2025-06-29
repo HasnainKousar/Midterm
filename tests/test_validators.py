@@ -3,7 +3,15 @@
 ###########################
 
 """
+Input Validation Tests Module
 
+This module contains comprehensive unit tests for the InputValidator class,
+which is responsible for validating and converting user input in the calculator application.
+
+The tests cover:
+- Positive test cases: Valid inputs (integers, decimals, strings)
+- Negative test cases: Invalid inputs (non-numeric strings, exceeding limits, None values)
+- Edge cases: Zero values, whitespace handling, boundary conditions
 """
 from logging import config
 import pytest
@@ -84,6 +92,4 @@ def test_validate_number_none():
     """Test validation of None input."""
     with pytest.raises(ValidationError, match="Invalid number format: None"):
         InputValidator.validate_number(None, config)
-
-
 
