@@ -23,11 +23,8 @@ Key Concepts:
 
 from decimal import Decimal
 import logging
-from operator import le
 import os
 from pathlib import Path
-import re
-from tkinter import N
 from typing import List, Optional, Union, Any, Dict
 import pandas as pd
 
@@ -38,7 +35,7 @@ from app.exceptions import OperationError, ValidationError
 from app.history import HistoryObserver
 from app.input_validators import InputValidator
 from app.operations import Operation
-import history
+
 
 # Define type aliases for better readability
 Number = Union[int, float, Decimal]
@@ -47,10 +44,18 @@ CalculationResult = Union[Decimal, str]
 
 class Calculator:
     """
+    Main Calculator class that integrates all components and manages operations, history, observers, and configuration.
     
+    This class provides methods for performing calculations, managing history, and handling configuration.
+    It uses the Memento pattern for undo/redo functionality and the Observer pattern for history management.
     """
     def __init__(self, config: Optional[CalculatorConfig] = None):
         """
+        Initialize the Calculator with a configuration object.
+
+        Args:
+            config (Optional[CalculatorConfig], optional): Configuration settings for the calculator.
+                If not provided, default settings will be used.
         """
         # if no config is provided, create a default one
         if config is None:
@@ -95,7 +100,10 @@ class Calculator:
     
     def _setup_logging(self):
         """
+        Configure the logging system for the calculator.
         
+        Sets up the logging to a file with the specified format and level.
+
         """
 
         try:
@@ -116,12 +124,22 @@ class Calculator:
 
     def _setup_directories(self) -> None:
         """
+        Create necessary directories.
+
+        Ensure that all necessary directories for history management exist.
 
         """
         self.config.history_dir.mkdir(parents=True, exist_ok=True)
 
     def add_observer(self, observer: HistoryObserver) -> None:
         """
+        Register a new observer to the calculator.
+
+        Adds an observer to the list of observers allowing it to receive updates
+        when new calculations are performed.
+
+        Args:
+            observer (HistoryObserver): The observer to be added.
         
         """
         self.observers.append(observer)
@@ -130,6 +148,10 @@ class Calculator:
 
     def remove_observer(self, observer: HistoryObserver) -> None:
         """
+        Remove an observer from the calculator.
+
+        Args:
+            observer (HistoryObserver): The observer to be removed.
         
         """
         self.observers.remove(observer)
@@ -137,6 +159,13 @@ class Calculator:
 
     def notify_observers(self, calculation: Calculation) -> None:
         """
+        Notify all observers about a new calculation.
+
+        This method iterates through all registered observers and calls their
+        update method with the new calculation.
+
+        Args:
+            calculation (Calculation): The Calculation instance to notify observers about.
         
         """
         for observer in self.observers:
@@ -145,7 +174,15 @@ class Calculator:
     
     def set_operation(self, operation: Operation) -> None:
         """
-        
+        Set the current operation strategy for the calculator.
+
+        Assigns the provided operation as the current strategy for performing calculations.
+        This allows the calculator to perform different types of calculations
+
+
+        Args:
+            operation (Operation): The operation to set as the current strategy.
+
         """
 
         self.operation_strategy = operation
@@ -158,6 +195,21 @@ class Calculator:
             b: Union[str, Number]
     ) -> CalculationResult:
         """
+        Perform a calculation using the current operation strategy.
+
+        Validates and sanitizes the input, performs the calculation using
+        the current operation strategy, updates the history, and notifies observers.
+
+        Args:
+            a (Union[str, Number]): The first operand for the calculation.
+            b (Union[str, Number]): The second operand for the calculation.
+
+        Returns:
+            CalculationResult: The result of the calculation.
+
+        Raises:
+            ValidationError: If the input validation fails.
+            OperationError: If the operation cannot be performed.
         """
         if not self.operation_strategy:
             raise OperationError("No operation set. Please set an operation before performing calculations.")
@@ -207,6 +259,13 @@ class Calculator:
     
     def save_history(self) -> None:
         """
+        Save the current calculation history to a CSV file.
+
+        Serializes the history of calculations to a CSV file for persistence storage.
+        Use pandas for easy data manipulation and storage.
+
+        Raises:
+            OperationError: If the history cannot be saved.
         
         """
 
@@ -246,8 +305,15 @@ class Calculator:
         
     def load_history(self) -> None:
         """
+        Load calculation history from a CSV file using pandas.
         
+        Reads the history from the configured CSV file and reconstructs the Calculation
+        instances, restoring them in the calculator's history.
+        
+        Raises:
+            OperationError: If the history cannot be loaded or is invalid.
         """
+
         try:
             # check if history file exists
             if self.config.history_file.exists():
@@ -281,6 +347,12 @@ class Calculator:
 
     def get_history_dataframe(self) -> pd.DataFrame:
         """
+        Get the current calculation history as a pandas DataFrame.
+
+        Convert the list of Calculation instances into a pandas DataFrame for easy manipulation and analysis.
+
+        Returns:
+            pd.DataFrame: A DataFrame containing the calculation history.
 
         """
 
@@ -297,7 +369,12 @@ class Calculator:
     
     def show_history(self) -> List[str]:
         """
-        
+        Get formated history of calculations.
+
+        Returns a human-readable list of all calculations performed by the calculator.
+
+        Returns:
+            List[str]: A list of formatted calculation history entries.
         """
         return [
             f"{calc.operation}({calc.operand1}, {calc.operand2}) = {calc.result}"
@@ -316,6 +393,12 @@ class Calculator:
     
     def undo(self) -> bool:
         """
+        Undo the last calculation.
+
+        Restores the calculator's state to the previous memento, effectively undoing the last operation.
+        
+        Returns:
+            bool: True if the undo was successful, False if there are no actions to undo.
         
         """
         if not self.undo_stack:
@@ -331,6 +414,12 @@ class Calculator:
     
     def redo(self) -> bool:
         """
+        Redo the last undone calculation.
+
+        Restores the calculator's state to the next memento, effectively redoing the last undone operation.
+        
+        Returns:
+            bool: True if the redo was successful, False if there are no actions to redo.
         
         """
         if not self.redo_stack:
