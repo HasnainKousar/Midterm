@@ -83,5 +83,26 @@ def test_remove_observer(calculator):
     calculator.remove_observer(observer)
     assert observer not in calculator.observers
 
+# Test for performing operations
+def test_perform_operation_addition(calculator):
+    """Test for performing addition operation."""
+    operation = OperationFactory.create_operation('add')
+    calculator.set_operation(operation)
+    result = calculator.perform_operation(5, 4)
+    assert result == Decimal('9')
+
+def test_perform_operation_validation_error(calculator):
+    """ """
+    calculator.set_operation(OperationFactory.create_operation('add'))
+    with pytest.raises(ValidationError):
+        calculator.perform_operation("five", 4)
+
+
+def test_perform_operation_operation_error(calculator):
+    """ """
+    with pytest.raises(OperationError, match="No operation set. Please set an operation before performing calculations."):
+        calculator.perform_operation(5, 4)
+
+
 
 
