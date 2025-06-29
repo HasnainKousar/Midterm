@@ -15,6 +15,7 @@ from app.calculator import Calculator
 from app.calculator_config import CalculatorConfig
 
 
+
 # sample set up for mock calculation
 calculation_mock = Mock(spec=Calculation)
 calculation_mock.operation = 'Addition'
@@ -41,4 +42,33 @@ def test_logging_observer_none_calculation():
     observer = LoggingObserver()
     with pytest.raises(AttributeError):
         observer.update(None)
+
+########################
+# Test AutoSaverObserver
+########################
+
+def test_autosave_observer_triggers_save():
+    calculator_mock = Mock(spec=Calculator)
+    calculator_mock.config = CalculatorConfig()
+    calculator_mock.config.auto_save = True
+    observer = AutoSaverObserver(calculator_mock)
+    observer.update(calculation_mock)
+    calculator_mock.save_history.assert_called_once()
+
+
+@patch('logging.info')
+def test_autosave_observer_does_not_trigger_save_when_auto_save_disabled(mock_logging_info):
+    """Test that AutoSaverObserver does not trigger save when auto_save is False."""
+    calculator_mock = Mock(spec=Calculator)
+    calculator_mock.config = CalculatorConfig()
+    calculator_mock.config.auto_save = False
+    observer = AutoSaverObserver(calculator_mock)
+    observer.update(calculation_mock)
+    calculator_mock.save_history.assert_not_called()
+    logging.info.assert_not_called()
+
+
+
+
+
 
