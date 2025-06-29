@@ -71,6 +71,28 @@ def test_logging_setup(logging_info_mock):
         calculator = Calculator(CalculatorConfig())
         logging_info_mock.assert_any_call("Calculator initialized with configuration")
 
+# Test for logging setup failed
+@patch('builtins.print')
+def test_setup_logging_failed(mock_print):
+    """Test that logging setup fails gracefully."""
+    with patch.object(CalculatorConfig, 'log_dir', new_callable=PropertyMock) as mock_log_dir, \
+         patch.object(CalculatorConfig, 'log_file', new_callable=PropertyMock) as mock_log_file:
+        
+        mock_log_dir.return_value = Path('./test_logs')
+        mock_log_file.return_value = Path('./test_logs/calculator.log')
+
+        # Mock the logging setup to raise an exception
+        with patch('app.calculator.logging.basicConfig') as mock_logging_config:
+            mock_logging_config.side_effect = Exception("Logging setup failed")
+            
+            # Attempt to initialize the calculator
+            with pytest.raises(Exception, match="Logging setup failed"):
+                Calculator(CalculatorConfig())
+            
+            # Verify that the error message was printed
+            mock_print.assert_called_once_with("Error setting up logging: Logging setup failed")
+
+    
 # Test for logging history failed
 @patch('app.calculator.logging.warning')
 @patch('app.calculator.logging.info')
