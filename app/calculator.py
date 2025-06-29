@@ -203,6 +203,48 @@ class Calculator:
             raise OperationError(f"Operation failed: {str(e)}")
         
     
+    def save_history(self) -> None:
+        """
+        
+        """
+
+        try:
+            # ensure history directory exists
+            self.config.history_dir.mkdir(parents=True, exist_ok=True)
+
+            history_data = []
+            # prepare history data for saving
+            for calc in self.history:
+                history_data.append({
+                    'operation': str(calc.operation),
+                    'operand1': str(calc.operand1),
+                    'operand2': str(calc.operand2),
+                    'result': str(calc.result),
+                    'timestamp': calc.timestamp.isoformat()
+                })
+
+            if history_data:
+                # create a pandas DataFrame from the history data
+                df = pd.DataFrame(history_data)
+                # save the DataFrame to a CSV file
+                df.to_csv(self.config.history_file, index=False)
+                logging.info(f"History saved successfully to {self.config.history_file}")
+
+            else:
+                # if history is empty, create an empty CSV file with headers
+                pd.DataFrame(columns=['operation', 'operand1', 'operand2', 'result', 'timestamp']).to_csv(
+                    self.config.history_file, index=False
+                )
+                logging.info("Empty history saved to CSV file.")
+
+        except Exception as e:
+            # log any errors that occur during history saving
+            logging.error(f"Failed to save history: {e}")
+            raise OperationError(f"Failed to save history: {e}")
+        
+    
+    
+    
     
 
 
