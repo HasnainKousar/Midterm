@@ -54,6 +54,18 @@ def test_calculator_initialization(calculator):
     assert calculator.redo_stack == []
     assert calculator.operation_strategy is None
 
+def test_calculator_initialization_with_config_is_none():
+    """Test that Calculator initializes with a default configuration."""
+    calculator = Calculator()
+    assert calculator.config is not None
+    assert isinstance(calculator.config, CalculatorConfig)
+    assert calculator.history == []
+    assert calculator.undo_stack == []
+    assert calculator.redo_stack == []
+    assert calculator.operation_strategy is None
+
+
+
 
 
 
