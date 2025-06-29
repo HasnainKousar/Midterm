@@ -3,8 +3,11 @@
 ###########################
 
 """
+Unit tests for the Calculator class and its functionality.
 
-
+This module contains comprehensive pytest-based unit tests for the Calculator class,
+including mathematical operations, history management, undo/redo functionality,
+configuration handling, logging, and error scenarios.
 """
 
 import datetime
@@ -63,9 +66,6 @@ def test_calculator_initialization_with_config_is_none():
     assert calculator.undo_stack == []
     assert calculator.redo_stack == []
     assert calculator.operation_strategy is None
-
-
-
 
 
 
