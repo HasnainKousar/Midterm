@@ -293,7 +293,7 @@ class TestOperationFactory:
             "power": Power,
             "root": Root,
             "modulus": Modulus,
-            "integerdivide": IntegerDivision,
+            "integerdivision": IntegerDivision,
             "percentage": Percentage,
             "absolutedifference": AbsoluteDifference
         }
