@@ -55,5 +55,19 @@ def test_calculator_initialization(calculator):
     assert calculator.operation_strategy is None
 
 
+# Test Logging Setup
+
+@patch('app.calculator.logging.info')
+def test_logging_setup(logging_info_mock):
+    with patch.object(CalculatorConfig, 'log_dir', new_callable=PropertyMock) as mock_log_dir, \
+         patch.object(CalculatorConfig, 'log_file', new_callable=PropertyMock) as mock_log_file:
+        
+        mock_log_dir.return_value = Path('/tmp/logs')
+        mock_log_file.return_value = Path('/tmp/logs/calculator.log')
+
+        # Instantiate the calculator to trigger logging setup
+        calculator = Calculator(CalculatorConfig())
+        logging_info_mock.assert_any_call("Calculator initialized with configuration")
+
 
 
