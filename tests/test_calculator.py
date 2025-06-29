@@ -116,19 +116,35 @@ def test_calculator_init_logging_history_failed(logging_info_mock, logging_warni
             logging_info_mock.assert_any_call("Calculator initialized with configuration")
 
         
-# Test for adding and removing observers
+# Test for adding, removing and notifying observers
 def test_add_observer(calculator):
-    """ """
+    """Test for adding an observer."""
     observer = LoggingObserver()
     calculator.add_observer(observer)
     assert observer in calculator.observers
 
 def test_remove_observer(calculator):
-    """ """
+    """Test for removing an observer."""
     observer = LoggingObserver()
     calculator.add_observer(observer)
     calculator.remove_observer(observer)
     assert observer not in calculator.observers
+
+def test_notify_observers(calculator):
+    """Test for notifying observers."""
+    observer = LoggingObserver()
+    calculator.add_observer(observer)
+    # Mock a calculation to notify observers
+    calculation = Mock()
+    calculation.operation = 'Addition'
+    calculation.operand1 = Decimal('3')
+    calculation.operand2 = Decimal('4')
+    calculation.result = Decimal('7')
+    # Notify observers
+    calculator.notify_observers(calculation)
+    # Check that the observer's update method was called
+    observer.update(calculation)  # This should not raise an error
+
 
 # Test for performing operations
 def test_perform_operation_addition(calculator):
