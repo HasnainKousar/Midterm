@@ -13,6 +13,36 @@ from typing import Any, Dict
 
 from app.exceptions import OperationError
 
+"""
+Calculation Module
+
+This module provides a robust, class-based architecture for mathematical operations
+with comprehensive error handling, validation, and serialization capabilities.
+
+The main component is the Calculation class, which encapsulates mathematical
+operations with automatic result computation, timestamping, and validation.
+It supports serialization to dictionary format for persistence and includes
+comprehensive error handling for edge cases.
+
+Key Features:
+- Automatic result computation and validation
+- Timestamping of calculations
+- Support for basic arithmetic operations (add, subtract, multiply, divide)
+- Advanced operations (power, sqrt, absolutedifference)
+- Comprehensive error handling with custom exceptions
+- Serialization and deserialization capabilities
+- String representation and formatting methods
+- Equality comparison support
+
+Classes:
+    Calculation: Main class for encapsulating mathematical operations
+
+Example:
+    >>> calc = Calculation(Decimal('10'), Decimal('5'), 'add')
+    >>> print(calc.result)  # Decimal('15')
+    >>> calc_dict = calc.to_dict()
+    >>> restored_calc = Calculation.from_dict(calc_dict)
+"""
 
 @dataclass
 class Calculation:
