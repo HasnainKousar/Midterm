@@ -250,6 +250,24 @@ def test_clear_history(calculator):
 
 # Test history management negative cases
 
+def test_history_exceeds_max_size(calculator):
+    """Test that history does not exceed max size."""
+    # Set max history size to 1 for testing
+    calculator.config.max_history_size = 1
+    # Perform an operation
+    operation = OperationFactory.create_operation('add')
+    calculator.set_operation(operation)
+    calculator.perform_operation(5, 4)
+    # Perform another operation
+    calculator.perform_operation(3, 2)
+    # Check that the history only contains one entry
+    assert len(calculator.history) == 1
+
+
+
+
+
+
 
 
 
