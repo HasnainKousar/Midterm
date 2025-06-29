@@ -63,8 +63,27 @@ def test_validate_number_trimmed_string():
 # Negative Test Cases
 #############################
 
+def test_validate_number_invalid_string():
+    """Test validation of an invalid string."""
+    with pytest.raises(ValidationError, match="Invalid number format: abc"):
+        InputValidator.validate_number('abc', config)
 
 
+def test_validate_number_exceeds_max_value():
+    """Test validation of a number that exceeds the maximum allowed value."""
+    with pytest.raises(ValidationError, match="Input exceeds maximum allowed value: 100000"):
+        InputValidator.validate_number(Decimal('100001'), config)
+
+
+def test_validate_number_empty_string():
+    """Test validation of an empty string."""
+    with pytest.raises(ValidationError, match="Invalid number format: "):
+        InputValidator.validate_number('', config)
+
+def test_validate_number_none():
+    """Test validation of None input."""
+    with pytest.raises(ValidationError, match="Invalid number format: None"):
+        InputValidator.validate_number(None, config)
 
 
 
