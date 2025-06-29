@@ -242,6 +242,43 @@ class Calculator:
             logging.error(f"Failed to save history: {e}")
             raise OperationError(f"Failed to save history: {e}")
         
+    def load_history(self) -> None:
+        """
+        
+        """
+        try:
+            # check if history file exists
+            if self.config.history_file.exists():
+                # read the CSV file into a pandas DataFrame
+                df = pd.read_csv(self.config.history_file)
+
+                if not df.empty:
+                    # Deserialize each row into a Calculation object
+                    self.history = [
+                        Calculation.from_dict({
+                            'operation': row['operation'],
+                            'operand1': row['operand1'],
+                            'operand2': row['operand2'],
+                            'result': row['result'],
+                            'timestamp': row['timestamp']
+                        })
+                        for _, row in df.iterrows()
+                    ]
+                    logging.info(f"Loaded {len(self.history)} calculations from history file.")
+                else:
+                    logging.info("Loaded empty history file, no calculations found.")
+            else:
+                # if the history file does not exist, start with an empty history
+                logging.info("History file does not exist, starting with empty history.")
+
+        except Exception as e:
+            # log any errors that occur during history loading
+            logging.error(f"Failed to load history: {e}")
+            raise OperationError(f"Failed to load history: {e}")
+        
+
+        
+
     
     
     
