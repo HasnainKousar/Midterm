@@ -26,6 +26,7 @@ import logging
 from operator import le
 import os
 from pathlib import Path
+import re
 from tkinter import N
 from typing import List, Optional, Union, Any, Dict
 import pandas as pd
@@ -37,6 +38,7 @@ from app.exceptions import OperationError, ValidationError
 from app.history import HistoryObserver
 from app.input_validators import InputValidator
 from app.operations import Operation
+import history
 
 # Define type aliases for better readability
 Number = Union[int, float, Decimal]
@@ -275,6 +277,34 @@ class Calculator:
             # log any errors that occur during history loading
             logging.error(f"Failed to load history: {e}")
             raise OperationError(f"Failed to load history: {e}")
+        
+
+    def get_history_dataframe(self) -> pd.DataFrame:
+        """
+
+        """
+
+        history_data = []
+        for calc in self.history:
+            history_data.append({
+                'operation': str(calc.operation),
+                'operand1': str(calc.operand1),
+                'operand2': str(calc.operand2),
+                'result': str(calc.result),
+                'timestamp': calc.timestamp.isoformat()
+            })
+        return pd.DataFrame(history_data)
+    
+    def show_history(self) -> List[str]:
+        """
+        
+        """
+        return [
+            f"{calc.operation}({calc.operand1}, {calc.operand2}) = {calc.result}"
+            for calc in self.history
+        ]
+    
+    
         
 
         
