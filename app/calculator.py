@@ -36,3 +36,62 @@ from app.history import HistoryObserver
 from app.input_validators import InputValidator
 from app.operations import Operation
 
+# Define type aliases for better readability
+Number = Union[int, float, Decimal]
+CalculationResult = Union[Decimal, str]
+
+
+class Calculator:
+    """
+    
+    """
+    def __init__(self, config: Optional[CalculatorConfig] = None):
+        """
+        """
+        # if no config is provided, create a default one
+        if config is None:
+            current_file = Path(__file__)
+            project_root = current_file.parent.parent
+            config = CalculatorConfig(base_dir=project_root)
+        
+        # Assign the configuration and validate it
+        self.config = config
+        self.config.validate()
+
+        # make sure that log directory exists
+        os.makedirs(self.config.log_dir, exist_ok=True)
+
+        # set up logging system
+        self._setup_logging()
+
+        # initialize history and operation strategy
+        self.history: List[Calculation] = []  # List to store Calculation history
+        self.operation_strategy: Optional[Operation] = None  # Current operation strategy
+
+        # initialize observers
+        self.observers: List[HistoryObserver] = []
+
+        # initialize stacks for undo/redo functionality
+        self.undo_stack: List[CalculatorMemento] = []
+        self.redo_stack: List[CalculatorMemento] = []
+
+        # create required directories for history management
+        self._setup_directories()
+
+        try: 
+            # load history from file if it exists
+            self.load_history()
+        except Exception as e: 
+            # log the error if history loading fails
+            logging.warning(f"Failed to load existing history: {e}")
+
+        # log the initialization of the calculator
+        logging.info("Calculator initialized with configuration")
+
+
+
+
+
+
+
+
