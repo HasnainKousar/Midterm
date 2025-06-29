@@ -334,7 +334,7 @@ class Calculator:
                     ]
                     logging.info(f"Loaded {len(self.history)} calculations from history file.")
                 else:
-                    logging.info("Loaded empty history file, no calculations found.")
+                    logging.info("Loaded empty history file, no calculations found.") # pragma: no cover
             else:
                 # if the history file does not exist, start with an empty history
                 logging.info("History file does not exist, starting with empty history.")
