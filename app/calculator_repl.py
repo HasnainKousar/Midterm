@@ -14,7 +14,7 @@ import logging
 
 from app.calculator import Calculator
 from app.exceptions import OperationError, ValidationError
-from app.history import AutoSaveObserver, LoggingObserver
+from app.history import AutoSaverObserver, LoggingObserver
 from app.operations import OperationFactory
 
 
@@ -30,7 +30,7 @@ def start_calculator_repl():
 
         # Register observers for logging and auto-saving history
         calc.add_observer(LoggingObserver())
-        calc.add_observer(AutoSaveObserver(calc))
+        calc.add_observer(AutoSaverObserver(calc))
 
         print("Calculator REPL started. Type 'help' for available commands.")
 
@@ -148,6 +148,31 @@ def start_calculator_repl():
                     continue
                 # Handle unknown commands
                 print(f"Unknown command: '{command}'. Type 'help' for available commands.")
+
+            except KeyboardInterrupt:
+                # Handle Ctrl+C gracefully
+                print("\nOperation cancelled by user.")
+                continue
+            except EOFError:
+                # Handle EOF (Ctrl+D) gracefully
+                print("\nInput terminated by user. Exiting REPL....")
+                break
+            except Exception as e:
+                # Catch any other unexpected errors
+                print(f"Error: {e}")
+                continue
+    except Exception as e:
+        # Handle any initialization errors
+        print(f"Failed to start calculator REPL: {e}")
+        logging.error(f"Failed to start calculator REPL: {e}")
+        raise 
+
+if __name__ == "__main__":
+    # Start the calculator REPL when the script is run directly
+    start_calculator_repl()
+
+
+
 
             
 
