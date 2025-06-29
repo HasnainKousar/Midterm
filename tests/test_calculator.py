@@ -131,6 +131,63 @@ def test_redo_operation(calculator):
     assert len(calculator.history) == 1
    
 
+# Test for saving and loading history
+@patch('app.calculator.pd.DataFrame.to_csv')
+def test_save_history(mock_to_csv, calculator):
+    """Test for saving history to CSV file."""
+    # create an operation and perform it
+    operation = OperationFactory.create_operation('add')
+    calculator.set_operation(operation)
+    calculator.perform_operation(5, 4)
+    
+    # save the history
+    calculator.save_history()
+    
+    # check that to_csv was called
+    mock_to_csv.assert_called_once()
+
+@patch('app.calculator.pd.read_csv')
+@patch('app.calculator.Path.exists', return_value=True)
+def test_load_history(mock_exists, mock_read_csv, calculator):
+    """Test for loading history from CSV file."""
+    # mock CSV data to match expected format in from_dict
+    mock_read_csv.return_value = pd.DataFrame({
+        'operation': ['Addition'],
+        'operand1': ['3'],
+        'operand2': ['4'],
+        'result': ['7'],
+        'timestamp': [datetime.datetime.now().isoformat()]
+    })
+
+    # Test loading history functionality
+    try:
+        calculator.load_history()
+        # Verify the loaded history
+        assert calculator.history[0].operation == 'Addition'
+        assert calculator.history[0].operand1 == Decimal('3')
+        assert calculator.history[0].operand2 == Decimal('4')
+        assert calculator.history[0].result == Decimal('7')
+    except OperationError:
+        pytest.fail("Loading history raised an OperationError unexpectedly")
+
+def test_clear_history(calculator):
+    """Test for clearing the history."""
+    # create an operation and perform it
+    operation = OperationFactory.create_operation('add')
+    calculator.set_operation(operation)
+    calculator.perform_operation(5, 4)
+    
+    # clear the history
+    calculator.clear_history()
+    
+    # check that the history is empty
+    assert calculator.history == []
+    assert calculator.undo_stack == []
+    assert calculator.redo_stack == []
+
+
+
+    
 
 
 
