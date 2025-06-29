@@ -3,7 +3,10 @@
 ###########################
 
 """
+Unit tests for the Calculation class.
 
+This module contains comprehensive tests for the Calculation class functionality,
+including operation execution, error handling, serialization, and string representations.
 """
 
 import pytest
