@@ -398,6 +398,25 @@ def test_run_calculator_repl_unexpected_error(mock_calculator_class, mock_print,
     # Verify that the unexpected error message was printed
     mock_print.assert_any_call("An unexpected error occurred: Unexpected error")
 
+# Test case for handling KeyboardInterrupt in the REPL
+@patch('builtins.input', side_effect=KeyboardInterrupt())
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_keyboard_interrupt(mock_calculator_class, mock_print, mock_input):
+    """Test REPL KeyboardInterrupt handling."""
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.add_observer = Mock()
+    mock_calculator_class.return_value = mock_calc
+    
+    # Mock input to raise KeyboardInterrupt first, then 'exit'
+    with patch('builtins.input') as mock_input_patch:
+        mock_input_patch.side_effect = [KeyboardInterrupt(), 'exit']
+        start_calculator_repl()
+    
+    # Verify the correct message for KeyboardInterrupt
+    mock_print.assert_any_call("\nOperation cancelled by user.")
+
 
 
 
