@@ -29,7 +29,7 @@ from app.operations import OperationFactory
 # fixute to create a temporary directory for testing
 @pytest.fixture
 def calculator():
-    """ """
+    """ Fixture to create a Calculator instance with a temporary directory for configuration."""
     with TemporaryDirectory() as temp_dir:
         temp_path = Path(temp_dir)
         config = CalculatorConfig(base_dir=temp_path)
@@ -51,13 +51,13 @@ def calculator():
 
 #  Test for Calculator initialization
 def test_calculator_initialization(calculator):
-    """ """
+    """Test that Calculator initializes with the provided configuration."""
     assert calculator.history == []
     assert calculator.undo_stack == []
     assert calculator.redo_stack == []
     assert calculator.operation_strategy is None
 
-def test_calculator_initialization_with_config_is_none():
+def test_calculator_initialization_with_config_is_none(calculator):
     """Test that Calculator initializes with a default configuration."""
     calculator = Calculator()
     assert calculator.config is not None
