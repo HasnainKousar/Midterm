@@ -219,8 +219,29 @@ def test_run_calculator_repl_load_history_error(mock_calculator_class, mock_prin
     # Verify the correct message for loading history error
     mock_print.assert_any_call("Error loading history: Load error")
 
+# Test case for saving history in the REPL
+@patch('builtins.input', side_effect=['add', '2', '3', 'save', 'exit'])
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_save_history(mock_calculator_class, mock_print, mock_input):
+    """Test REPL save command"""
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.save_history = Mock()
+    mock_calc.add_observer = Mock()
+    mock_calculator_class.return_value = mock_calc
 
-    
+    start_calculator_repl()
+
+    # Verify save_history was called (once for the save command and once on exit)
+    assert mock_calc.save_history.call_count == 2
+    # Verify the correct message for saving history
+    mock_print.assert_any_call("History saved successfully.")
+
+
+
+
+
 
 
 
