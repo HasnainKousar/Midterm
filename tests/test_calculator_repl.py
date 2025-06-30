@@ -100,6 +100,7 @@ def test_run_calculator_repl_clear_history(mock_calculator_class, mock_print, mo
     # Verify the correct message for clearing history
     mock_print.assert_any_call("History cleared.")
 
+# Test case for undo command in the REPL
 @patch('builtins.input', side_effect=['add', '2', '3', 'undo', 'exit'])
 @patch('builtins.print')
 @patch('app.calculator_repl.Calculator')
@@ -118,6 +119,7 @@ def test_run_calculator_repl_undo(mock_calculator_class, mock_print, mock_input)
     # Verify the correct message for undoing the last operation
     mock_print.assert_any_call("Last operation undone.")
 
+# Test case for undo command in the REPL with no operations to undo
 @patch('builtins.input', side_effect=['undo', 'exit'])
 @patch('builtins.print')
 @patch('app.calculator_repl.Calculator')
@@ -136,8 +138,68 @@ def test_run_calculator_repl_undo_no_operations(mock_calculator_class, mock_prin
     # Verify the correct message for failed undo
     mock_print.assert_any_call("No operations to undo.")
 
+# Test case for redo command in the REPL
+@patch('builtins.input', side_effect=['add', '2', '3', 'undo', 'redo', 'exit'])
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_redo(mock_calculator_class, mock_print, mock_input):
+    """Test REPL redo command"""
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.undo = Mock()
+    # Mock redo to simulate redoing the last operation
+    mock_calc.redo = Mock()
+    mock_calc.add_observer = Mock()
+    mock_calculator_class.return_value = mock_calc
+
+    start_calculator_repl()
+    # Verify undo was called
+    mock_calc.undo.assert_called_once()
+    # Verify redo was called
+    mock_calc.redo.assert_called_once()
+    # Verify the correct message for redoing the last operation
+    mock_print.assert_any_call("Last operation redone.")
 
 
+
+# Test case for redo command in the REPL with no operations to redo
+@patch('builtins.input', side_effect=['redo', 'exit'])
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_redo_no_operations(mock_calculator_class, mock_print, mock_input):
+    """Test REPL redo command with no operations to redo"""
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.add_observer = Mock()
+    mock_calc.redo.return_value = False  # No operation to undo
+    mock_calculator_class.return_value = mock_calc
+    
+    start_calculator_repl()
+    
+    # Verify undo was called
+    mock_calc.redo.assert_called_once()
+    # Verify the correct message for failed undo
+    mock_print.assert_any_call("No operations to redo.")
+
+# Test case for loading history in the REPL
+@patch('builtins.input', side_effect=['load', 'exit'])
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_load_history(mock_calculator_class, mock_print, mock_input):
+    """Test REPL load command"""
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.load_history = Mock()
+    mock_calc.add_observer = Mock()
+    mock_calculator_class.return_value = mock_calc
+
+    start_calculator_repl()
+
+    # Verify load_history was called
+    mock_calc.load_history.assert_called_once()
+    # Verify the correct message for loading history
+    mock_print.assert_any_call("History loaded successfully.")
+    
 
 
 
