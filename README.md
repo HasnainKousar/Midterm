@@ -252,3 +252,30 @@ First number: Second number: 0
 Error: Division by zero is not allowed.
 ```
 
+## 🧪 Testing Instructions
+
+### Running Basic Tests
+
+```bash
+# Run all tests
+pytest
+
+# Run specific test file
+pytest tests/test_calculator.py
+```
+
+### Test Coverage
+
+```bash
+# Run tests with coverage report (automatically included)
+pytest
+
+# View detailed HTML coverage report in browser (need live server extension)
+open htmlcov/index.html
+```
+
+**Note**: Coverage reporting is automatically enabled in this project through `pytest.ini` configuration. Every time you run `pytest`, you'll see:
+- Test results
+- Coverage percentage
+- Missing lines report
+- HTML report generated in `htmlcov/` directory
