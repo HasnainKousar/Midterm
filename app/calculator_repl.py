@@ -20,7 +20,10 @@ from app.operations import OperationFactory
 
 def start_calculator_repl():
     """
-    
+    Start the calculator REPL (Read-Eval-Print Loop).
+
+    This function initializes the calculator, registers observers for logging and auto-saving history,
+    and provides an interactive command-line interface for performing calculations.
 
     """
 
