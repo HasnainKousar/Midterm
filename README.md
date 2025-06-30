@@ -279,3 +279,8 @@ open htmlcov/index.html
 - Coverage percentage
 - Missing lines report
 - HTML report generated in `htmlcov/` directory
+
+### Coverage Requirements
+
+The project maintains a **90% minimum test coverage** requirement. The CI/CD pipeline will fail if coverage drops below this threshold.
+
