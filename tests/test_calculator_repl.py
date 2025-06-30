@@ -366,7 +366,7 @@ def test_run_calculator_repl_operation_error(mock_calculator_class, mock_print, 
     start_calculator_repl()
     
     # Verify that the error message was printed
-    mock_print.assert_any_call("Error: Division by zero is not allowed.")
+    mock_print.assert_any_call(f"{Fore.RED}Error: Division by zero is not allowed.{Style.RESET_ALL}")
     
 # Test case for handling a ValidationError during input validation
 @patch('builtins.input', side_effect=['add', 'invalid', '3', 'exit'])
@@ -385,7 +385,7 @@ def test_run_calculator_repl_validation_error(mock_calculator_class, mock_print,
     start_calculator_repl()
     
     # Verify that the error message was printed
-    mock_print.assert_any_call("Error: Invalid input")
+    mock_print.assert_any_call(f"{Fore.RED}Error: Invalid input{Style.RESET_ALL}")
 
 # Test case for handling unexpected exceptions in the REPL
 @patch('builtins.input', side_effect=['add', '2', '3', 'unexpected', 'exit'])
@@ -404,7 +404,7 @@ def test_run_calculator_repl_unexpected_error(mock_calculator_class, mock_print,
     start_calculator_repl()
     
     # Verify that the unexpected error message was printed
-    mock_print.assert_any_call("An unexpected error occurred: Unexpected error")
+    mock_print.assert_any_call(f"{Fore.RED}An unexpected error occurred: Unexpected error{Style.RESET_ALL}")
 
 # Test case for handling KeyboardInterrupt in the REPL
 @patch('builtins.input', side_effect=KeyboardInterrupt())
@@ -423,7 +423,7 @@ def test_run_calculator_repl_keyboard_interrupt(mock_calculator_class, mock_prin
         start_calculator_repl()
     
     # Verify the correct message for KeyboardInterrupt
-    mock_print.assert_any_call("\nOperation cancelled by user.")
+    mock_print.assert_any_call(f"{Fore.GREEN}\nOperation cancelled by user.{Style.RESET_ALL}")
 
 # Test case for handling EOFError in the REPL
 @patch('builtins.input', side_effect=EOFError())
@@ -439,7 +439,7 @@ def test_run_calculator_repl_eof_error(mock_calculator_class, mock_print, mock_i
     start_calculator_repl()
     
     # Verify the correct message for EOFError
-    mock_print.assert_any_call("\nInput terminated by user. Exiting REPL....")
+    mock_print.assert_any_call(f"{Fore.GREEN}\nInput terminated by user. Exiting REPL....{Style.RESET_ALL}")
 
 # Test case for other unexpected errors in the REPL
 @patch('builtins.input', side_effect=RuntimeError("Command processing error"))
@@ -458,7 +458,7 @@ def test_run_calculator_repl_general_exception(mock_calculator_class, mock_print
         start_calculator_repl()
     
     # Verify the correct message for general exception
-    mock_print.assert_any_call("Error: Command processing error")
+    mock_print.assert_any_call(f"{Fore.RED}Error: Command processing error{Style.RESET_ALL}")
 
 # Test case for handling unexpected errors during calculator startup
 @patch('builtins.print')
@@ -472,7 +472,7 @@ def test_run_calculator_repl_initialization_error(mock_calculator_class, mock_pr
         start_calculator_repl()
     
     # Verify the correct error message was printed
-    mock_print.assert_any_call("Failed to start calculator REPL: Initialization failed")
+    mock_print.assert_any_call(f"{Fore.RED}Failed to start calculator REPL: Initialization failed{Style.RESET_ALL}")
 
 
 
