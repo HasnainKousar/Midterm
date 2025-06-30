@@ -417,7 +417,21 @@ def test_run_calculator_repl_keyboard_interrupt(mock_calculator_class, mock_prin
     # Verify the correct message for KeyboardInterrupt
     mock_print.assert_any_call("\nOperation cancelled by user.")
 
-
+# Test case for handling EOFError in the REPL
+@patch('builtins.input', side_effect=EOFError())
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_eof_error(mock_calculator_class, mock_print, mock_input):
+    """Test REPL EOFError handling."""
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.add_observer = Mock()
+    mock_calculator_class.return_value = mock_calc
+    
+    start_calculator_repl()
+    
+    # Verify the correct message for EOFError
+    mock_print.assert_any_call("\nInput terminated by user. Exiting REPL....")
 
 
 
