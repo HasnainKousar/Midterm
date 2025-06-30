@@ -3,7 +3,11 @@
 #############################
 
 """
+Unit tests for the Calculator REPL (Read-Eval-Print Loop) interface.
 
+This module contains comprehensive pytest-based unit tests for the calculator_repl module,
+testing command processing, user input handling, arithmetic operations, history management,
+undo/redo functionality, error scenarios, and exception handling in the REPL environment.
 """
 
 
