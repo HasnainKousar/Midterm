@@ -9,13 +9,17 @@ redo functionality.
 
 """
 
+from calendar import c
 from decimal import Decimal
 import logging
 
+from colorama import Fore, Style, init as colorama_init
 from app.calculator import Calculator
 from app.exceptions import OperationError, ValidationError
 from app.history import AutoSaverObserver, LoggingObserver
 from app.operations import OperationFactory
+
+colorama_init(autoreset=True)  # Initialize colorama for colored output
 
 
 def start_calculator_repl():
@@ -35,7 +39,7 @@ def start_calculator_repl():
         calc.add_observer(LoggingObserver())
         calc.add_observer(AutoSaverObserver(calc))
 
-        print("Calculator REPL started. Type 'help' for available commands.")
+        print(f"{Fore.GREEN}Calculator REPL started. Type 'help' for available commands.{Style.RESET_ALL}")
 
         while True:
             try:
