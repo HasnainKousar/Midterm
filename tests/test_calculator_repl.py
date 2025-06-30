@@ -61,7 +61,45 @@ def test_run_calculator_repl_history_with_calculations(mock_calculator_class, mo
     mock_print.assert_any_call("1. Addition(2, 3) = 5")
     
 
+@patch('builtins.input', side_effect=['history', 'exit'])
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_history_with_no_calculations(mock_calculator_class, mock_print, mock_input):
+    """Test REPL history command with no calculations in history"""
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.show_history.return_value = []  # Empty history
+    mock_calc.add_observer = Mock()
+    mock_calculator_class.return_value = mock_calc
 
+    start_calculator_repl()
+
+    # Verify save_history was called on exit
+    mock_calc.save_history.assert_called()
+    # Verify the correct message for no calculations in history
+    mock_print.assert_any_call("No calculations performed yet.")
+
+
+@patch('builtins.input', side_effect=['add', '2', '3', 'clear', 'exit'])
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_clear_history(mock_calculator_class, mock_print, mock_input):
+    """Test REPL clear command"""
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.clear_history = Mock()
+    mock_calc.add_observer = Mock()
+    mock_calculator_class.return_value = mock_calc
+
+    start_calculator_repl()
+
+    # Verify clear_history was called
+    mock_calc.clear_history.assert_called_once()
+    # Verify the correct message for clearing history
+    mock_print.assert_any_call("History cleared.")
+
+
+    
 
 
 
