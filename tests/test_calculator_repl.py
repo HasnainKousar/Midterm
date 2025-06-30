@@ -337,10 +337,66 @@ def test_run_calculator_repl_normalize_result(mock_calculator_class, mock_print,
     # Verify perform_operation was called
     mock_calc.perform_operation.assert_called_once()
 
+###################################
+# Test cases for handling errors in the REPL
+###################################
 
+# Test case for handling an OperationError performed operation
+@patch('builtins.input', side_effect=['add', '2', '0', 'exit'])
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_operation_error(mock_calculator_class, mock_print, mock_input):
+    """Test REPL handling OperationError during operation."""
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.add_observer = Mock()
+    mock_calc.set_operation = Mock()
+    # Simulate an OperationError for division by zero
+    mock_calc.perform_operation.side_effect = OperationError("Division by zero is not allowed.")
+    mock_calculator_class.return_value = mock_calc
+    
+    start_calculator_repl()
+    
+    # Verify that the error message was printed
+    mock_print.assert_any_call("Error: Division by zero is not allowed.")
+    
+# Test case for handling a ValidationError during input validation
+@patch('builtins.input', side_effect=['add', 'invalid', '3', 'exit'])
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_validation_error(mock_calculator_class, mock_print, mock_input):
+    """Test REPL handling ValidationError during input validation."""
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.add_observer = Mock()
+    mock_calc.set_operation = Mock()
+    # Simulate a ValidationError for invalid input
+    mock_calc.perform_operation.side_effect = ValidationError("Invalid input")
+    mock_calculator_class.return_value = mock_calc
+    
+    start_calculator_repl()
+    
+    # Verify that the error message was printed
+    mock_print.assert_any_call("Error: Invalid input")
 
-
-
+# Test case for handling unexpected exceptions in the REPL
+@patch('builtins.input', side_effect=['add', '2', '3', 'unexpected', 'exit'])
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_unexpected_error(mock_calculator_class, mock_print, mock_input):
+    """Test REPL handling unexpected exceptions."""
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.add_observer = Mock()
+    mock_calc.set_operation = Mock()
+    # Simulate an unexpected exception
+    mock_calc.perform_operation.side_effect = Exception("Unexpected error")
+    mock_calculator_class.return_value = mock_calc
+    
+    start_calculator_repl()
+    
+    # Verify that the unexpected error message was printed
+    mock_print.assert_any_call("An unexpected error occurred: Unexpected error")
 
 
 
