@@ -433,6 +433,39 @@ def test_run_calculator_repl_eof_error(mock_calculator_class, mock_print, mock_i
     # Verify the correct message for EOFError
     mock_print.assert_any_call("\nInput terminated by user. Exiting REPL....")
 
+# Test case for other unexpected errors in the REPL
+@patch('builtins.input', side_effect=RuntimeError("Command processing error"))
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_general_exception(mock_calculator_class, mock_print, mock_input):
+    """Test REPL general exception handling in main loop."""
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.add_observer = Mock()
+    mock_calculator_class.return_value = mock_calc
+    
+    # Mock input to raise an exception first, then 'exit'
+    with patch('builtins.input') as mock_input_patch:
+        mock_input_patch.side_effect = [RuntimeError("Command processing error"), 'exit']
+        start_calculator_repl()
+    
+    # Verify the correct message for general exception
+    mock_print.assert_any_call("Error: Command processing error")
+
+# Test case for handling unexpected errors during calculator startup
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_initialization_error(mock_calculator_class, mock_print):
+    """Test REPL initialization error handling."""
+    # Simulate an error during calculator initialization
+    mock_calculator_class.side_effect = Exception("Initialization failed")
+    
+    with pytest.raises(Exception, match="Initialization failed"):
+        start_calculator_repl()
+    
+    # Verify the correct error message was printed
+    mock_print.assert_any_call("Failed to start calculator REPL: Initialization failed")
+
 
 
 
