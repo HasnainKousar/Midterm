@@ -268,6 +268,41 @@ def test_run_calculator_repl_save_error(mock_calculator_class, mock_print, mock_
     # Verify the correct error message
     mock_print.assert_any_call("Error saving history: Save failed")
 
+# Test case for canceling the first number input in the REPL
+@patch('builtins.input', side_effect=['add', 'cancel', 'exit'])
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_cancel_first_number(mock_calculator_class, mock_print, mock_input):
+    """Test REPL canceling first number input."""
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.add_observer = Mock()
+    mock_calculator_class.return_value = mock_calc
+    
+    start_calculator_repl()
+    
+    # Verify that no calculations were performed
+    mock_calc.perform_calculation.assert_not_called()
+    # Verify the correct message for operation cancellation
+    mock_print.assert_any_call("Operation cancelled.")
+
+# Test case for canceling the second number input in the REPL
+@patch('builtins.input', side_effect=['add', '2', 'cancel', 'exit'])
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_cancel_second_number(mock_calculator_class, mock_print, mock_input):
+    """Test REPL canceling second number input."""
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.add_observer = Mock()
+    mock_calculator_class.return_value = mock_calc
+    
+    start_calculator_repl()
+    
+    # Verify that no calculations were performed
+    mock_calc.perform_calculation.assert_not_called()
+    # Verify the correct message for operation cancellation
+    mock_print.assert_any_call("Operation cancelled.")
 
 
 
