@@ -98,7 +98,53 @@ python main.py
 
 ## ⚙️ Configuration Setup
 
+### Creating the .env File
+
+The application uses environment variables for configuration. Create a `.env` file in the project root directory to customize settings.
+
+```bash
+# Create .env file in the project root
+touch .env
+```
+
+**Note**: The `.env` file is optional. If you don't create one, the application will use default values for all configuration settings.
+
+
+### Environment Variables
+
+Add the following variables to your `.env` file:
+
+```env
+# Logging Configuration
+CALCULATOR_LOG_LEVEL=INFO
+CALCULATOR_LOG_FILE=./logs/calculator.log
+
+# History Configuration
+CALCULATOR_HISTORY_FILE=./history/calculator_history.csv
+CALCULATOR_AUTO_SAVE=true
+
+# Application Configuration
+CALCULATOR_PRECISION=10
+CALCULATOR_BASE_DIR=.
+```
+
+
+### How .env Configuration Works in This Project
+
+The calculator application uses the **python-dotenv** library to load environment variables from a `.env` file. Here's how it works:
+
+1. **Automatic Loading**: When the application starts, `load_dotenv()` in `app/calculator_config.py` automatically reads the `.env` file
+2. **Fallback to Defaults**: If a variable isn't found in `.env`, the application uses sensible defaults
+3. **Runtime Configuration**: Environment variables can also be set at runtime (they override `.env` values)
+
+**Configuration Flow**:
+```
+.env file → Environment Variables → CalculatorConfig class → Application
+```
+
+**Example**: If you set `CALCULATOR_LOG_LEVEL=DEBUG` in your `.env` file, the application will use debug-level logging instead of the default INFO level.
 
 
 ### Directory Structure Setup
+````
 
