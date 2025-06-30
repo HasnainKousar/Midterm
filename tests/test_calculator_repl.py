@@ -16,6 +16,10 @@ import pytest
 from unittest.mock import Mock, patch
 from app.calculator_repl import start_calculator_repl
 from app.exceptions import OperationError, ValidationError
+from colorama import Fore, Style, init as colorama_init
+
+# Initialize colorama for colored output
+colorama_init(autoreset=True)  # Initialize colorama for colored output
 
 
 #Test case for exitting the REPL with a valid command
@@ -25,8 +29,8 @@ def test_run_calculator_repl_exit(mock_print, mock_input):
     with patch('app.calculator.Calculator.save_history') as mock_save_history:
         start_calculator_repl()
         mock_save_history.assert_called_once()
-        mock_print.assert_any_call("History saved successfully.")
-        mock_print.assert_any_call("Exiting calculator REPL. Goodbye!")
+        mock_print.assert_any_call(f"{Fore.GREEN}History saved successfully.{Style.RESET_ALL}")
+        mock_print.assert_any_call(f"{Fore.GREEN}Exiting calculator REPL. Goodbye!{Style.RESET_ALL}")
     
 # Test case for exit command with an error during history saving
 @patch('builtins.input', side_effect=['exit'])
@@ -36,8 +40,8 @@ def test_run_calculator_repl_exit_with_error(mock_print, mock_input):
     with patch('app.calculator.Calculator.save_history') as mock_save_history:
         mock_save_history.side_effect = OperationError("Save failed")
         start_calculator_repl()
-        mock_print.assert_any_call("Warning: Could not save history before exiting: Save failed")
-        mock_print.assert_any_call("Exiting calculator REPL. Goodbye!")
+        mock_print.assert_any_call(f"{Fore.RED}Warning: Could not save history before exiting: Save failed{Style.RESET_ALL}")
+        mock_print.assert_any_call(f"{Fore.GREEN}Exiting calculator REPL. Goodbye!{Style.RESET_ALL}")
 
 
 
