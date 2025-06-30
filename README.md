@@ -284,3 +284,12 @@ open htmlcov/index.html
 
 The project maintains a **90% minimum test coverage** requirement. The CI/CD pipeline will fail if coverage drops below this threshold.
 
+
+#### Test Files
+- **Calculator Core**: `tests/test_calculator.py`
+- **Operations**: `tests/test_operations.py`
+- **Configuration**: `tests/test_config.py`
+- **History Management**: `tests/test_history.py`
+- **REPL Interface**: `tests/test_calculator_repl.py`
+- **Calculations**: `tests/test_calculation.py`
+
