@@ -345,6 +345,13 @@ def test_run_calculator_repl_normalize_result(mock_calculator_class, mock_print,
     # Verify perform_operation was called
     mock_calc.perform_operation.assert_called_once()
 
+# Test case for addition operation in the REPL
+@patch('builtins.input', side_effect=['add', '2', '3', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_addition(mock_print, mock_input):
+    start_calculator_repl()
+    mock_print.assert_any_call(f"{Fore.GREEN}\nResult: 5{Style.RESET_ALL}")
+
 ###################################
 # Test cases for handling errors in the REPL
 ###################################
