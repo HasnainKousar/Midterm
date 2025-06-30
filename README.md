@@ -4,6 +4,15 @@ A command-line calculator application built with Python, featuring a Read-Eval-P
 
 ## 📋 Table of Contents
 
+- [Project Description](#-project-description)
+- [Features](#-features)
+- [Installation Instructions](#-installation-instructions)
+- [Configuration Setup](#-configuration-setup)
+- [Usage Guide](#-usage-guide)
+- [Testing Instructions](#-testing-instructions)
+- [CI/CD Information](#-cicd-information)
+- [License](#-license)
+
 
 
 ## 🚀 Project Description
@@ -280,11 +289,6 @@ open htmlcov/index.html
 - Missing lines report
 - HTML report generated in `htmlcov/` directory
 
-### Coverage Requirements
-
-The project maintains a **90% minimum test coverage** requirement. The CI/CD pipeline will fail if coverage drops below this threshold.
-
-
 #### Test Files
 - **Calculator Core**: `tests/test_calculator.py`
 - **Operations**: `tests/test_operations.py`
@@ -300,26 +304,6 @@ The project maintains a **90% minimum test coverage** requirement. The CI/CD pip
 
 The project uses GitHub Actions for continuous integration and deployment, configured in `.github/workflows/tests.yml`.
 
-#### Workflow Triggers
-- **Push to main branch**: Runs tests when you push commits to the main branch
-- **Pull requests to main**: Runs tests when creating or updating pull requests targeting the main branch
-
-#### Workflow Steps
-
-1. **Environment Setup**
-   - Ubuntu latest runner
-   - Python 3.x installation
-   - Dependency installation from `requirements.txt`
-
-2. **Testing**
-   - Run pytest with coverage
-   - Enforce 90% minimum coverage
-   - Generate coverage reports
-
-3. **Validation**
-   - Code quality checks
-   - Test result reporting
-   - Coverage validation
 
 #### Workflow Configuration
 
@@ -351,3 +335,11 @@ jobs:
 - **Minimum Coverage**: 90%
 - **Coverage Scope**: `app/` module
 - **Failure Condition**: Pipeline fails if coverage drops below threshold
+
+
+## 📄 License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+---
+
