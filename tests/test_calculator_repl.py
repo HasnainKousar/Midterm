@@ -53,9 +53,9 @@ def test_run_calculator_repl_help(mock_print, mock_input):
     with patch('app.calculator.Calculator.save_history') as mock_save_history:
         start_calculator_repl()
         mock_save_history.assert_called_once()  # save_history is called during exit
-        mock_print.assert_any_call("\nAvailable commands:")
+        mock_print.assert_any_call(f"{Fore.GREEN}\nAvailable commands:")
         mock_print.assert_any_call("  add, subtract, multiply, divide, power, root, modulus, integerdivision, percentage, absolutedifference")
-        mock_print.assert_any_call("  exit - Exit the calculator REPL")
+        mock_print.assert_any_call(f"  exit - Exit the calculator REPL{Style.RESET_ALL}")
 
 # Test case for performing a valid addition operation and history saving
 @patch('builtins.input', side_effect=['add', '2', '3', 'history', 'exit'])
@@ -78,8 +78,8 @@ def test_run_calculator_repl_history_with_calculations(mock_calculator_class, mo
     # Verify save_history was called on exit
     mock_calc.save_history.assert_called()
     # Verify the correct messages for history with calculations
-    mock_print.assert_any_call("\nCalculation History:")
-    mock_print.assert_any_call("1. Addition(2, 3) = 5")
+    mock_print.assert_any_call(f"{Fore.GREEN}\nCalculation History:{Style.RESET_ALL}")
+    mock_print.assert_any_call(f"{Fore.GREEN}1. Addition(2, 3) = 5{Style.RESET_ALL}")
     
 # Test case for history command with no calculations in history
 @patch('builtins.input', side_effect=['history', 'exit'])
@@ -98,7 +98,7 @@ def test_run_calculator_repl_history_with_no_calculations(mock_calculator_class,
     # Verify save_history was called on exit
     mock_calc.save_history.assert_called()
     # Verify the correct message for no calculations in history
-    mock_print.assert_any_call("No calculations performed yet.")
+    mock_print.assert_any_call(f"{Fore.GREEN}No calculations performed yet.{Style.RESET_ALL}")
 
 # Test case for clearing history in the REPL
 @patch('builtins.input', side_effect=['add', '2', '3', 'clear', 'exit'])
@@ -117,7 +117,7 @@ def test_run_calculator_repl_clear_history(mock_calculator_class, mock_print, mo
     # Verify clear_history was called
     mock_calc.clear_history.assert_called_once()
     # Verify the correct message for clearing history
-    mock_print.assert_any_call("History cleared.")
+    mock_print.assert_any_call(f"{Fore.GREEN}History cleared.{Style.RESET_ALL}")
 
 # Test case for undo command in the REPL
 @patch('builtins.input', side_effect=['add', '2', '3', 'undo', 'exit'])
@@ -136,7 +136,7 @@ def test_run_calculator_repl_undo(mock_calculator_class, mock_print, mock_input)
     # Verify undo was called
     mock_calc.undo.assert_called_once()
     # Verify the correct message for undoing the last operation
-    mock_print.assert_any_call("Last operation undone.")
+    mock_print.assert_any_call(f"{Fore.GREEN}Last operation undone.{Style.RESET_ALL}")
 
 # Test case for undo command in the REPL with no operations to undo
 @patch('builtins.input', side_effect=['undo', 'exit'])
@@ -155,7 +155,7 @@ def test_run_calculator_repl_undo_no_operations(mock_calculator_class, mock_prin
     # Verify undo was called
     mock_calc.undo.assert_called_once()
     # Verify the correct message for failed undo
-    mock_print.assert_any_call("No operations to undo.")
+    mock_print.assert_any_call(f"{Fore.GREEN}No operations to undo.{Style.RESET_ALL}")
 
 # Test case for redo command in the REPL
 @patch('builtins.input', side_effect=['add', '2', '3', 'undo', 'redo', 'exit'])
@@ -177,7 +177,7 @@ def test_run_calculator_repl_redo(mock_calculator_class, mock_print, mock_input)
     # Verify redo was called
     mock_calc.redo.assert_called_once()
     # Verify the correct message for redoing the last operation
-    mock_print.assert_any_call("Last operation redone.")
+    mock_print.assert_any_call(f"{Fore.GREEN}Last operation redone.{Style.RESET_ALL}")
 
 # Test case for redo command in the REPL with no operations to redo
 @patch('builtins.input', side_effect=['redo', 'exit'])
@@ -196,7 +196,7 @@ def test_run_calculator_repl_redo_no_operations(mock_calculator_class, mock_prin
     # Verify undo was called
     mock_calc.redo.assert_called_once()
     # Verify the correct message for failed undo
-    mock_print.assert_any_call("No operations to redo.")
+    mock_print.assert_any_call(f"{Fore.GREEN}No operations to redo.{Style.RESET_ALL}")
 
 # Test case for loading history in the REPL
 @patch('builtins.input', side_effect=['load', 'exit'])
@@ -215,7 +215,7 @@ def test_run_calculator_repl_load_history(mock_calculator_class, mock_print, moc
     # Verify load_history was called
     mock_calc.load_history.assert_called_once()
     # Verify the correct message for loading history
-    mock_print.assert_any_call("History loaded successfully.")
+    mock_print.assert_any_call(f"{Fore.GREEN}History loaded successfully.{Style.RESET_ALL}")
 
 # Test case for loading history in the REPL with an error
 @patch('builtins.input', side_effect=['load', 'exit'])
@@ -234,7 +234,7 @@ def test_run_calculator_repl_load_history_error(mock_calculator_class, mock_prin
     # Verify load_history was called
     mock_calc.load_history.assert_called_once()
     # Verify the correct message for loading history error
-    mock_print.assert_any_call("Error loading history: Load error")
+    mock_print.assert_any_call(f"{Fore.RED}Error loading history: Load error{Style.RESET_ALL}")
 
 # Test case for saving history in the REPL
 @patch('builtins.input', side_effect=['add', '2', '3', 'save', 'exit'])
@@ -253,7 +253,7 @@ def test_run_calculator_repl_save_history(mock_calculator_class, mock_print, moc
     # Verify save_history was called (once for the save command and once on exit)
     assert mock_calc.save_history.call_count == 2
     # Verify the correct message for saving history
-    mock_print.assert_any_call("History saved successfully.")
+    mock_print.assert_any_call(f"{Fore.GREEN}History saved successfully.{Style.RESET_ALL}")
 
 # Test case for saving history in the REPL with an error
 @patch('builtins.input', side_effect=['save', 'exit'])
@@ -282,7 +282,7 @@ def test_run_calculator_repl_save_error(mock_calculator_class, mock_print, mock_
     # Verify save_history was called
     assert mock_calc.save_history.call_count >= 1
     # Verify the correct error message
-    mock_print.assert_any_call("Error saving history: Save failed")
+    mock_print.assert_any_call(f"{Fore.RED}Error saving history: Save failed{Style.RESET_ALL}")
 
 # Test case for canceling the first number input in the REPL
 @patch('builtins.input', side_effect=['add', 'cancel', 'exit'])
@@ -300,7 +300,7 @@ def test_run_calculator_repl_cancel_first_number(mock_calculator_class, mock_pri
     # Verify that no calculations were performed
     mock_calc.perform_calculation.assert_not_called()
     # Verify the correct message for operation cancellation
-    mock_print.assert_any_call("Operation cancelled.")
+    mock_print.assert_any_call(f"{Fore.GREEN}Operation cancelled.{Style.RESET_ALL}")
 
 # Test case for canceling the second number input in the REPL
 @patch('builtins.input', side_effect=['add', '2', 'cancel', 'exit'])
@@ -318,7 +318,7 @@ def test_run_calculator_repl_cancel_second_number(mock_calculator_class, mock_pr
     # Verify that no calculations were performed
     mock_calc.perform_calculation.assert_not_called()
     # Verify the correct message for operation cancellation
-    mock_print.assert_any_call("Operation cancelled.")
+    mock_print.assert_any_call(f"{Fore.GREEN}Operation cancelled.{Style.RESET_ALL}")
 
 # Test case for normalizing results in the REPL
 @patch('builtins.input', side_effect=['add', '2', '3', 'exit'])
@@ -341,7 +341,7 @@ def test_run_calculator_repl_normalize_result(mock_calculator_class, mock_print,
     start_calculator_repl()
     
     # Verify that the result was printed (normalized from 5.00 to 5)
-    mock_print.assert_any_call("\nResult: 5")
+    mock_print.assert_any_call(f"{Fore.GREEN}\nResult: 5{Style.RESET_ALL}")
     # Verify perform_operation was called
     mock_calc.perform_operation.assert_called_once()
 
