@@ -23,6 +23,17 @@ def test_run_calculator_repl_exit(mock_print, mock_input):
         mock_save_history.assert_called_once()
         mock_print.assert_any_call("History saved successfully.")
         mock_print.assert_any_call("Exiting calculator REPL. Goodbye!")
+    
+# Test case for exit command with an error during history saving
+@patch('builtins.input', side_effect=['exit'])
+@patch('builtins.print')
+def test_run_calculator_repl_exit_with_error(mock_print, mock_input):
+    """Test REPL exit command with an error during history saving."""
+    with patch('app.calculator.Calculator.save_history') as mock_save_history:
+        mock_save_history.side_effect = OperationError("Save failed")
+        start_calculator_repl()
+        mock_print.assert_any_call("Warning: Could not save history before exiting: Save failed")
+        mock_print.assert_any_call("Exiting calculator REPL. Goodbye!")
 
 
 
@@ -160,8 +171,6 @@ def test_run_calculator_repl_redo(mock_calculator_class, mock_print, mock_input)
     # Verify the correct message for redoing the last operation
     mock_print.assert_any_call("Last operation redone.")
 
-
-
 # Test case for redo command in the REPL with no operations to redo
 @patch('builtins.input', side_effect=['redo', 'exit'])
 @patch('builtins.print')
@@ -238,7 +247,6 @@ def test_run_calculator_repl_save_history(mock_calculator_class, mock_print, moc
     # Verify the correct message for saving history
     mock_print.assert_any_call("History saved successfully.")
 
-
 # Test case for saving history in the REPL with an error
 @patch('builtins.input', side_effect=['save', 'exit'])
 @patch('builtins.print')
@@ -304,16 +312,38 @@ def test_run_calculator_repl_cancel_second_number(mock_calculator_class, mock_pr
     # Verify the correct message for operation cancellation
     mock_print.assert_any_call("Operation cancelled.")
 
-
-
-
-
-
-
-
-
-
+# Test case for normalizing results in the REPL
+@patch('builtins.input', side_effect=['add', '2', '3', 'exit'])
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_normalize_result(mock_calculator_class, mock_print, mock_input):
+    """Test REPL normalizing Decimal results."""
+    from decimal import Decimal
     
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.add_observer = Mock()
+    mock_calc.set_operation = Mock()
+    
+    # Create a Decimal result that needs normalization (e.g., 5.00 -> 5)
+    decimal_result = Decimal('5.00')
+    mock_calc.perform_operation.return_value = decimal_result
+    mock_calculator_class.return_value = mock_calc
+    
+    start_calculator_repl()
+    
+    # Verify that the result was printed (normalized from 5.00 to 5)
+    mock_print.assert_any_call("\nResult: 5")
+    # Verify perform_operation was called
+    mock_calc.perform_operation.assert_called_once()
+
+
+
+
+
+
+
+
 
 
 
