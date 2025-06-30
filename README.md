@@ -160,7 +160,7 @@ First number: Second number: 4
 Result: 6
 ```
 
-#### Available Commands
+#### Available Operation Commands
 
 | Command | Description | Example |
 |---------|-------------|---------|
@@ -174,4 +174,81 @@ Result: 6
 | `integerdivision` | Integer division | `10 // 3 = 3` |
 | `percentage` | Percentage | `25% of 200 = 50` |
 | `absolutedifference` | Absolute difference | `\|5 - 8\| = 3` |
+
+#### View Calculation History
+```
+Enter command: history
+Calculation History:
+1. Addition(5, 3) = 8
+2. Subtraction(10, 4) = 6
+```
+
+#### Clear History
+```
+Enter command: clear
+History cleared.
+```
+
+#### Save History
+```
+Enter command: save
+History saved successfully.
+```
+
+#### Load History
+```
+Enter command: load
+History loaded successfully.
+```
+
+#### Undo Last Operation
+```
+Enter command: undo
+Last operation undone.
+```
+
+#### Redo Last Operation
+```
+Enter command: redo
+Last operation redone.
+```
+
+#### Get Help
+```
+Enter command: help
+Available commands:
+  add, subtract, multiply, divide, power, root, modulus, integerdivision, percentage, absolutedifference
+  history - Show calculation history
+  undo - Undo the last operation
+  redo - Redo the last undone operation
+  clear - Clear the history
+  save - Save the current history to a file
+  load - Load history from a file
+  exit - Exit the calculator REPL
+```
+
+#### Exit Calculator
+```
+Enter command: exit
+History saved successfully.
+Exiting calculator REPL. Goodbye!
+```
+
+#### Cancel Operation
+Cancel any operation during number input:
+```
+Enter command: add
+Enter number (or cancel to abort): cancel
+Operation cancelled.
+```
+
+#### Error Handling
+
+The calculator provides clear error messages:
+```
+Enter command: divide
+Enter number (or cancel to abort): 5
+First number: Second number: 0
+Error: Division by zero is not allowed.
+```
 
