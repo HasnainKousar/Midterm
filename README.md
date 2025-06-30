@@ -100,15 +100,13 @@ python main.py
 
 ### Creating the .env File
 
-The application uses environment variables for configuration. Create a `.env` file in the project root directory to customize settings.
+The application uses environment variables for configuration.
 
 ```bash
 # Create .env file in the project root
 touch .env
 ```
-
-**Note**: The `.env` file is optional. If you don't create one, the application will use default values for all configuration settings.
-
+**Note**: The `.env` file is optional. 
 
 ### Environment Variables
 
@@ -135,16 +133,45 @@ The calculator application uses the **python-dotenv** library to load environmen
 
 1. **Automatic Loading**: When the application starts, `load_dotenv()` in `app/calculator_config.py` automatically reads the `.env` file
 2. **Fallback to Defaults**: If a variable isn't found in `.env`, the application uses sensible defaults
-3. **Runtime Configuration**: Environment variables can also be set at runtime (they override `.env` values)
 
-**Configuration Flow**:
+
+## 📖 Usage Guide
+
+### Starting the Calculator
+
+```bash
+python main.py
 ```
-.env file → Environment Variables → CalculatorConfig class → Application
+
+### Basic Operations
+
+The calculator supports the following mathematical operations:
+
+#### Arithmetic Operations
+```
+Enter command: add
+Enter number (or cancel to abort): 5
+First number: Second number: 3
+Result: 8
+
+Enter command: subtract
+Enter number (or cancel to abort): 10
+First number: Second number: 4
+Result: 6
 ```
 
-**Example**: If you set `CALCULATOR_LOG_LEVEL=DEBUG` in your `.env` file, the application will use debug-level logging instead of the default INFO level.
+#### Available Commands
 
-
-### Directory Structure Setup
-````
+| Command | Description | Example |
+|---------|-------------|---------|
+| `add` | Addition | `5 + 3 = 8` |
+| `subtract` | Subtraction | `10 - 4 = 6` |
+| `multiply` | Multiplication | `6 * 7 = 42` |
+| `divide` | Division | `15 / 3 = 5` |
+| `power` | Exponentiation | `2 ^ 3 = 8` |
+| `root` | Root calculation | `√16 = 4` |
+| `modulus` | Remainder | `10 % 3 = 1` |
+| `integerdivision` | Integer division | `10 // 3 = 3` |
+| `percentage` | Percentage | `25% of 200 = 50` |
+| `absolutedifference` | Absolute difference | `\|5 - 8\| = 3` |
 
