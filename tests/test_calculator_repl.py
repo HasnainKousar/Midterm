@@ -24,3 +24,15 @@ def test_run_calculator_repl_exit(mock_print, mock_input):
         mock_print.assert_any_call("Exiting calculator REPL. Goodbye!")
 
 
+
+# Test case for displaying help in the REPL
+@patch('builtins.input', side_effect=['help', 'exit'])
+@patch('builtins.print')
+def test_run_calculator_repl_help(mock_print, mock_input):
+    """Test REPL help command."""
+    with patch('app.calculator.Calculator.save_history') as mock_save_history:
+        start_calculator_repl()
+        mock_save_history.assert_called_once()  # save_history is called during exit
+        mock_print.assert_any_call("\nAvailable commands:")
+        mock_print.assert_any_call("  add, subtract, multiply, divide, power, root, modulus, integerdivision, percentage, absolutedifference")
+        mock_print.assert_any_call("  exit - Exit the calculator REPL")
