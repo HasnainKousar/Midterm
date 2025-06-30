@@ -239,6 +239,37 @@ def test_run_calculator_repl_save_history(mock_calculator_class, mock_print, moc
     mock_print.assert_any_call("History saved successfully.")
 
 
+# Test case for saving history in the REPL with an error
+@patch('builtins.input', side_effect=['save', 'exit'])
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_save_error(mock_calculator_class, mock_print, mock_input):
+    """Test REPL save command when error occurs."""
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.add_observer = Mock()
+    # Make save_history fail when called explicitly but succeed on exit
+    call_count = 0
+    def save_side_effect():
+        nonlocal call_count
+        call_count += 1
+        if call_count == 1:
+            raise Exception("Save failed")
+        # Let subsequent calls (exit) succeed
+        return None
+    
+    mock_calc.save_history.side_effect = save_side_effect
+    mock_calculator_class.return_value = mock_calc
+    
+    start_calculator_repl()
+    
+    # Verify save_history was called
+    assert mock_calc.save_history.call_count >= 1
+    # Verify the correct error message
+    mock_print.assert_any_call("Error saving history: Save failed")
+
+
+
 
 
 
