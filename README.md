@@ -293,3 +293,61 @@ The project maintains a **90% minimum test coverage** requirement. The CI/CD pip
 - **REPL Interface**: `tests/test_calculator_repl.py`
 - **Calculations**: `tests/test_calculation.py`
 
+
+## 🔄 CI/CD Information
+
+### GitHub Actions Workflow
+
+The project uses GitHub Actions for continuous integration and deployment, configured in `.github/workflows/tests.yml`.
+
+#### Workflow Triggers
+- **Push to main branch**: Runs tests when you push commits to the main branch
+- **Pull requests to main**: Runs tests when creating or updating pull requests targeting the main branch
+
+#### Workflow Steps
+
+1. **Environment Setup**
+   - Ubuntu latest runner
+   - Python 3.x installation
+   - Dependency installation from `requirements.txt`
+
+2. **Testing**
+   - Run pytest with coverage
+   - Enforce 90% minimum coverage
+   - Generate coverage reports
+
+3. **Validation**
+   - Code quality checks
+   - Test result reporting
+   - Coverage validation
+
+#### Workflow Configuration
+
+```yaml
+name: Run Tests on Push or Pull Request to Main
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pytest --cov=app --cov-fail-under=90
+```
+
+#### Coverage Requirements
+
+- **Minimum Coverage**: 90%
+- **Coverage Scope**: `app/` module
+- **Failure Condition**: Pipeline fails if coverage drops below threshold
