@@ -6,6 +6,7 @@
 
 """
 
+
 from unittest import mock
 import pytest
 from unittest.mock import Mock, patch
@@ -37,6 +38,7 @@ def test_run_calculator_repl_help(mock_print, mock_input):
         mock_print.assert_any_call("  add, subtract, multiply, divide, power, root, modulus, integerdivision, percentage, absolutedifference")
         mock_print.assert_any_call("  exit - Exit the calculator REPL")
 
+# Test case for performing a valid addition operation and history saving
 @patch('builtins.input', side_effect=['add', '2', '3', 'history', 'exit'])
 @patch('builtins.print')
 @patch('app.calculator_repl.Calculator')
@@ -60,7 +62,7 @@ def test_run_calculator_repl_history_with_calculations(mock_calculator_class, mo
     mock_print.assert_any_call("\nCalculation History:")
     mock_print.assert_any_call("1. Addition(2, 3) = 5")
     
-
+# Test case for history command with no calculations in history
 @patch('builtins.input', side_effect=['history', 'exit'])
 @patch('builtins.print')
 @patch('app.calculator_repl.Calculator')
@@ -79,7 +81,7 @@ def test_run_calculator_repl_history_with_no_calculations(mock_calculator_class,
     # Verify the correct message for no calculations in history
     mock_print.assert_any_call("No calculations performed yet.")
 
-
+# Test case for clearing history in the REPL
 @patch('builtins.input', side_effect=['add', '2', '3', 'clear', 'exit'])
 @patch('builtins.print')
 @patch('app.calculator_repl.Calculator')
@@ -97,6 +99,48 @@ def test_run_calculator_repl_clear_history(mock_calculator_class, mock_print, mo
     mock_calc.clear_history.assert_called_once()
     # Verify the correct message for clearing history
     mock_print.assert_any_call("History cleared.")
+
+@patch('builtins.input', side_effect=['add', '2', '3', 'undo', 'exit'])
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_undo(mock_calculator_class, mock_print, mock_input):
+    """Test REPL undo command"""
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.undo = Mock()
+    mock_calc.add_observer = Mock()
+    mock_calculator_class.return_value = mock_calc
+
+    start_calculator_repl()
+
+    # Verify undo was called
+    mock_calc.undo.assert_called_once()
+    # Verify the correct message for undoing the last operation
+    mock_print.assert_any_call("Last operation undone.")
+
+@patch('builtins.input', side_effect=['undo', 'exit'])
+@patch('builtins.print')
+@patch('app.calculator_repl.Calculator')
+def test_run_calculator_repl_undo_no_operations(mock_calculator_class, mock_print, mock_input):
+    """Test REPL undo command with no operations to undo"""
+    # Create a mock calculator instance
+    mock_calc = Mock()
+    mock_calc.add_observer = Mock()
+    mock_calc.undo.return_value = False  # No operation to undo
+    mock_calculator_class.return_value = mock_calc
+    
+    start_calculator_repl()
+    
+    # Verify undo was called
+    mock_calc.undo.assert_called_once()
+    # Verify the correct message for failed undo
+    mock_print.assert_any_call("No operations to undo.")
+
+
+
+
+
+
 
 
     
